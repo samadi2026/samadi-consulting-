@@ -767,7 +767,7 @@ function chatAddMsg(text,sender){
   body.scrollTop=body.scrollHeight;
 }
 
-function sendLeadToSheet(name,email,company,source){fetch("https://suzan-gleesome-expediently.ngrok-free.dev/webhook/chatbot-lead",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,email,company,source,date:new Date().toISOString()})}).catch(()=>{});}
+function sendLeadToSheet(name,email,company,source){fetch("https://n8n-production-bb2e.up.railway.app/webhook/consulting-lead",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,email,company,source,date:new Date().toISOString()})}).catch(()=>{});}
 function chatSubmitLead(){
   const n=document.getElementById('cf-n').value.trim();
   const e=document.getElementById('cf-e').value.trim();
