@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samadi Consulting — AI & Business Systems</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#060606;--white:#f2f0ea;--accent:#c8ff00;
+  --gray:#666;--border:#1c1c1c;--card:#0e0e0e;
+}
+html{scroll-behavior:smooth;cursor:none}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+h1,h2,h3,h4,nav .logo{font-family:'Syne',sans-serif}
+
+/* CUSTOM CURSOR */
+#cursor{position:fixed;width:12px;height:12px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s,width 0.2s,height 0.2s,background 0.2s;mix-blend-mode:difference}
+#cursor-ring{position:fixed;width:40px;height:40px;border:1px solid rgba(200,255,0,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.15s,width 0.3s,height 0.3s,opacity 0.3s;opacity:0.6}
+body:hover #cursor{opacity:1}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:22px 64px;border-bottom:1px solid transparent;background:transparent;transition:all 0.4s}
+nav.scrolled{border-bottom-color:var(--border);background:rgba(6,6,6,0.92);backdrop-filter:blur(20px)}
+.logo{font-size:17px;font-weight:700;letter-spacing:-0.3px;color:var(--white);text-decoration:none}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{color:#555;text-decoration:none;font-size:13px;letter-spacing:0.3px;transition:color 0.2s;font-family:'DM Sans',sans-serif}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{background:var(--accent);color:var(--black);padding:11px 24px;border-radius:100px;font-size:13px;font-weight:700;text-decoration:none;font-family:'Syne',sans-serif;letter-spacing:0.3px;transition:all 0.2s}
+.nav-cta:hover{background:var(--white)}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:140px 64px 100px;position:relative;overflow:hidden}
+.hero-canvas{position:absolute;inset:0;pointer-events:none}
+.hero-eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:28px;font-family:'Syne',sans-serif;opacity:0;transform:translateY(20px)}
+.hero-title{font-size:clamp(52px,7.5vw,108px);font-weight:800;line-height:0.92;letter-spacing:-3px;max-width:1000px;margin-bottom:36px;opacity:0;transform:translateY(30px)}
+.hero-title .line{display:block;overflow:hidden}
+.hero-title .accent-word{color:var(--accent);display:inline-block}
+.hero-sub{font-size:17px;color:#666;max-width:480px;line-height:1.75;margin-bottom:52px;opacity:0;transform:translateY(20px);font-weight:300}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;opacity:0;transform:translateY(20px)}
+.btn-primary{background:var(--accent);color:var(--black);padding:17px 34px;border-radius:100px;font-size:14px;font-weight:700;text-decoration:none;font-family:'Syne',sans-serif;letter-spacing:0.2px;transition:all 0.25s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(200,255,0,0.25)}
+.btn-outline{border:1px solid #2a2a2a;color:#888;padding:17px 34px;border-radius:100px;font-size:14px;text-decoration:none;font-family:'DM Sans',sans-serif;transition:all 0.25s}
+.btn-outline:hover{border-color:#555;color:var(--white)}
+.hero-metrics{display:flex;gap:0;margin-top:100px;border-top:1px solid var(--border);opacity:0}
+.metric{padding:32px 0;flex:1;border-right:1px solid var(--border);padding-right:48px;padding-left:0}
+.metric:last-child{border-right:none;padding-left:48px;padding-right:0}
+.metric:not(:first-child){padding-left:48px}
+.metric-val{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;color:var(--accent);line-height:1}
+.metric-lbl{font-size:12px;color:#555;margin-top:6px;letter-spacing:0.5px}
+
+/* SECTIONS */
+section{padding:120px 64px}
+.s-tag{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:18px;font-family:'Syne',sans-serif}
+.s-title{font-size:clamp(34px,4.5vw,58px);font-weight:800;letter-spacing:-1.5px;line-height:1.05;margin-bottom:18px}
+.s-sub{font-size:16px;color:#555;max-width:480px;line-height:1.75;margin-bottom:72px;font-weight:300}
+
+/* SERVICES */
+#services{background:var(--card);border-top:1px solid var(--border)}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:20px;overflow:hidden;margin-top:72px}
+.svc-card{background:var(--card);padding:48px;transition:background 0.3s;position:relative;overflow:hidden}
+.svc-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,255,0,0.03) 0%,transparent 60%);opacity:0;transition:opacity 0.3s}
+.svc-card:hover{background:#111}
+.svc-card:hover::before{opacity:1}
+.svc-num{font-family:'Syne',sans-serif;font-size:11px;color:#333;letter-spacing:2px;margin-bottom:28px;font-weight:600}
+.svc-card h3{font-size:19px;font-weight:700;margin-bottom:14px;letter-spacing:-0.3px;line-height:1.3}
+.svc-card p{font-size:14px;color:#555;line-height:1.75;font-weight:300}
+.svc-line{width:32px;height:2px;background:var(--accent);margin-bottom:24px;transform:scaleX(0);transform-origin:left;transition:transform 0.4s}
+.svc-card:hover .svc-line{transform:scaleX(1)}
+
+/* PHILOSOPHY */
+#philosophy{background:var(--black)}
+.phil-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:72px}
+.phil-card{padding:44px;border:1px solid var(--border);border-radius:20px;transition:all 0.3s;position:relative;overflow:hidden}
+.phil-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.4s}
+.phil-card:hover{border-color:#2a2a2a;transform:translateY(-4px)}
+.phil-card:hover::after{transform:scaleX(1)}
+.phil-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:var(--border);margin-bottom:24px;line-height:1}
+.phil-card h3{font-size:21px;font-weight:700;margin-bottom:14px;letter-spacing:-0.3px}
+.phil-card p{font-size:14px;color:#555;line-height:1.75;font-weight:300}
+.quote-wrap{margin-top:72px;padding:64px;background:var(--card);border:1px solid var(--border);border-radius:20px;position:relative;overflow:hidden}
+.quote-wrap::before{content:'"';position:absolute;top:-20px;left:40px;font-family:'Syne',sans-serif;font-size:200px;color:rgba(200,255,0,0.04);line-height:1;pointer-events:none}
+.quote-wrap p{font-family:'Syne',sans-serif;font-size:clamp(20px,2.8vw,32px);font-weight:700;line-height:1.35;letter-spacing:-0.5px;position:relative;z-index:1}
+.quote-wrap strong{color:var(--accent)}
+
+/* ASSESSMENT */
+#assessment{background:var(--card);border-top:1px solid var(--border)}
+.assess-inner{max-width:720px;margin:72px auto 0}
+.q-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px}
+.q-step{font-size:12px;color:#444;font-family:'Syne',sans-serif;letter-spacing:1px}
+.q-track{flex:1;height:2px;background:var(--border);margin:0 24px;border-radius:1px;overflow:hidden}
+.q-fill{height:100%;background:var(--accent);border-radius:1px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1)}
+.q-question{font-family:'Syne',sans-serif;font-size:clamp(22px,3vw,34px);font-weight:700;margin-bottom:40px;letter-spacing:-0.5px;line-height:1.2}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:44px}
+.q-opt{background:#0a0a0a;border:1px solid var(--border);color:#888;padding:18px 22px;border-radius:14px;font-size:14px;cursor:pointer;text-align:left;transition:all 0.2s;font-family:'DM Sans',sans-serif;line-height:1.4}
+.q-opt:hover{border-color:#333;color:var(--white)}
+.q-opt.sel{border-color:var(--accent);color:var(--accent);background:#0a0a0a}
+.q-actions{display:flex;justify-content:space-between;align-items:center}
+.q-back-btn{background:transparent;color:#444;border:1px solid var(--border);padding:14px 26px;border-radius:100px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.q-back-btn:hover{color:var(--white);border-color:#333}
+.q-next-btn{background:var(--accent);color:var(--black);border:none;padding:14px 34px;border-radius:100px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.2s}
+.q-next-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(200,255,0,0.2)}
+.result-panel{display:none;text-align:center;padding:72px 48px;background:#0a0a0a;border:1px solid var(--border);border-radius:20px}
+.result-ring{width:140px;height:140px;border-radius:50%;border:2px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 32px;position:relative}
+.result-ring::before{content:'';position:absolute;inset:-4px;border-radius:50%;background:conic-gradient(var(--accent) 0%,transparent 0%);transition:background 1s}
+.result-score-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:var(--accent);line-height:1}
+.result-score-lbl{font-size:10px;color:#444;letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+.result-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;margin-bottom:14px;letter-spacing:-0.3px}
+.result-desc{font-size:15px;color:#666;line-height:1.75;margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;font-weight:300}
+.result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* SIMULATOR */
+#simulator{background:var(--black);border-top:1px solid var(--border)}
+.sim-container{margin-top:72px}
+.sim-tabs{display:flex;background:#0a0a0a;border:1px solid var(--border);border-radius:100px;padding:4px;width:fit-content;margin-bottom:52px;gap:4px}
+.sim-tab{padding:11px 28px;border-radius:100px;border:none;cursor:pointer;font-size:13px;font-family:'Syne',sans-serif;font-weight:600;transition:all 0.25s;letter-spacing:0.3px}
+.sim-tab.on{background:var(--accent);color:var(--black)}
+.sim-tab.off{background:transparent;color:#444}
+.sim-tab.off:hover{color:#888}
+.flow-canvas{position:relative;width:100%;height:420px;background:#0a0a0a;border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.flow-canvas svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.flow-node{position:absolute;transform:translate(-50%,-50%);cursor:pointer;transition:all 0.3s;z-index:2}
+.fn-inner{width:110px;padding:20px 14px;background:#111;border:1px solid #1e1e1e;border-radius:16px;text-align:center;transition:all 0.3s}
+.flow-node:hover .fn-inner,.flow-node.active .fn-inner{border-color:var(--accent);background:#0e0e0e;transform:scale(1.06)}
+.fn-icon{font-size:0;width:32px;height:32px;margin:0 auto 10px;border-radius:8px;background:#1a1a1a;display:flex;align-items:center;justify-content:center}
+.fn-icon svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.fn-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:3px}
+.fn-cat{font-size:9px;color:#444;text-transform:uppercase;letter-spacing:1px}
+.flow-node.broken .fn-inner{border-color:#1a1a1a;opacity:0.35;filter:saturate(0)}
+.detail-panel{margin-top:24px;padding:32px;background:#0a0a0a;border:1px solid var(--border);border-radius:16px;display:none}
+.detail-panel.show{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.dp-col h5{font-family:'Syne',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#444;margin-bottom:10px}
+.dp-col p{font-size:13px;color:#888;line-height:1.65;font-weight:300}
+.dp-col h4{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:10px;color:var(--accent)}
+
+/* TESTIMONIALS */
+#testimonials{background:var(--card);border-top:1px solid var(--border)}
+.testi-outer{overflow:hidden;margin-top:72px;position:relative}
+.testi-track{display:flex;gap:20px;transition:transform 0.6s cubic-bezier(0.4,0,0.2,1)}
+.testi-card{min-width:400px;padding:44px;background:#0a0a0a;border:1px solid var(--border);border-radius:20px;flex-shrink:0;transition:border-color 0.3s}
+.testi-card:hover{border-color:#2a2a2a}
+.t-stars{display:flex;gap:3px;margin-bottom:24px}
+.t-star{width:14px;height:14px;background:var(--accent);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.t-text{font-size:15px;line-height:1.75;color:#888;margin-bottom:32px;font-weight:300;font-style:italic}
+.t-author{display:flex;align-items:center;gap:14px}
+.t-av{width:42px;height:42px;border-radius:50%;background:#111;border:1px solid #222;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--accent)}
+.t-name{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--white)}
+.t-role{font-size:12px;color:#444;margin-top:2px}
+.t-nav{display:flex;gap:8px;margin-top:36px}
+.t-dot{width:24px;height:3px;border-radius:2px;background:#1a1a1a;border:none;cursor:pointer;transition:all 0.3s}
+.t-dot.on{background:var(--accent);width:40px}
+
+/* CTA */
+#cta{padding:140px 64px;background:var(--black);border-top:1px solid var(--border);text-align:center;position:relative;overflow:hidden}
+.cta-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;background:radial-gradient(ellipse,rgba(200,255,0,0.04) 0%,transparent 65%);pointer-events:none}
+.cta-title{font-size:clamp(40px,6vw,80px);font-weight:800;letter-spacing:-2.5px;line-height:0.95;margin-bottom:24px}
+.cta-title .accent{color:var(--accent)}
+.cta-sub{font-size:17px;color:#555;margin-bottom:52px;font-weight:300}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{padding:44px 64px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:#0a0a0a}
+.f-links{display:flex;gap:28px;list-style:none}
+.f-links a{color:#333;text-decoration:none;font-size:13px;transition:color 0.2s}
+.f-links a:hover{color:#888}
+.f-copy{font-size:12px;color:#2a2a2a}
+
+/* CHATBOT */
+#chat-fab{position:fixed;bottom:32px;right:32px;z-index:800;width:58px;height:58px;border-radius:50%;background:var(--accent);border:none;cursor:none;display:flex;align-items:center;justify-content:center;transition:all 0.2s;box-shadow:0 0 0 0 rgba(200,255,0,0.4)}
+#chat-fab.pulse{animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(200,255,0,0.4)}70%{box-shadow:0 0 0 12px rgba(200,255,0,0)}100%{box-shadow:0 0 0 0 rgba(200,255,0,0)}}
+#chat-fab:hover{transform:scale(1.08)}
+#chat-fab svg{width:22px;height:22px}
+#chat-win{position:fixed;bottom:104px;right:32px;z-index:799;width:390px;height:560px;border-radius:22px;background:#060606;border:1px solid #1a1a1a;display:none;flex-direction:column;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.9),0 0 0 1px rgba(200,255,0,0.05)}
+#chat-win.open{display:flex}
+#chat-hd{padding:18px 22px;background:#0a0a0a;border-bottom:1px solid #111;display:flex;align-items:center;gap:14px}
+.c-logo{width:38px;height:38px;border-radius:50%;background:#111;border:1px solid #222;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:var(--accent)}
+.c-info-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--white)}
+.c-info-status{font-size:11px;color:#333;display:flex;align-items:center;gap:5px;margin-top:1px}
+.c-dot{width:6px;height:6px;border-radius:50%;background:#22c55e}
+#chat-body{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px}
+#chat-body::-webkit-scrollbar{width:0}
+.cm{max-width:86%}
+.cm.b{align-self:flex-start}
+.cm.u{align-self:flex-end}
+.cm-bub{padding:11px 15px;border-radius:18px;font-size:13px;line-height:1.6}
+.cm.b .cm-bub{background:#0e0e0e;border:1px solid #111;color:#ccc;border-bottom-left-radius:4px}
+.cm.u .cm-bub{background:var(--accent);color:var(--black);border-bottom-right-radius:4px;font-weight:500}
+.cm-time{font-size:10px;color:#2a2a2a;padding:2px 4px;margin-top:3px}
+.cm.u .cm-time{text-align:right}
+#chat-qr{display:flex;flex-wrap:wrap;gap:6px;padding:10px 18px 4px}
+.cq{font-size:11px;padding:7px 13px;border-radius:20px;border:1px solid #1a1a1a;background:transparent;color:#555;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
+.cq:hover{border-color:var(--accent);color:var(--accent)}
+#chat-foot{display:flex;gap:10px;padding:14px 18px;border-top:1px solid #111;background:#080808}
+#chat-inp{flex:1;background:#0e0e0e;border:1px solid #111;border-radius:22px;padding:10px 16px;font-size:13px;color:var(--white);outline:none;font-family:'DM Sans',sans-serif;transition:border-color 0.2s}
+#chat-inp::placeholder{color:#2a2a2a}
+#chat-inp:focus{border-color:#2a2a2a}
+#chat-snd{width:38px;height:38px;border-radius:50%;background:var(--accent);border:none;cursor:none;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s}
+#chat-snd:hover{transform:scale(1.06)}
+#chat-snd svg{width:15px;height:15px;fill:var(--black)}
+.c-form{background:#0e0e0e;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:9px;margin-top:8px}
+.c-form input{background:#060606;border:1px solid #111;border-radius:10px;padding:9px 13px;font-size:12px;color:var(--white);outline:none;width:100%;font-family:'DM Sans',sans-serif;transition:border-color 0.2s}
+.c-form input:focus{border-color:#2a2a2a}
+.c-form input::placeholder{color:#2a2a2a}
+.c-form button{background:var(--accent);color:var(--black);border:none;border-radius:10px;padding:10px;font-size:12px;cursor:pointer;font-weight:700;font-family:'Syne',sans-serif;transition:opacity 0.2s}
+.c-form button:hover{opacity:0.85}
+.c-link{color:var(--accent);text-decoration:underline;font-size:13px;cursor:pointer}
+.typing-dots{background:#0e0e0e;border:1px solid #111;border-radius:18px;border-bottom-left-radius:4px;padding:12px 16px;display:flex;gap:5px;align-items:center;width:fit-content}
+.typing-dots span{width:5px;height:5px;border-radius:50%;background:#333;animation:tdot 1.4s infinite}
+.typing-dots span:nth-child(2){animation-delay:0.2s}
+.typing-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes tdot{0%,60%,100%{transform:translateY(0);background:#333}30%{transform:translateY(-4px);background:#555}}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.8s cubic-bezier(0.4,0,0.2,1),transform 0.8s cubic-bezier(0.4,0,0.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:900px){
+  nav{padding:18px 24px}.nav-links{display:none}
+  section,#hero,#cta{padding:80px 24px}
+  .services-grid,.phil-grid{grid-template-columns:1fr}
+  .q-opts{grid-template-columns:1fr}
+  .hero-metrics{flex-direction:column;gap:0}
+  .metric{border-right:none;border-bottom:1px solid var(--border);padding:24px 0}
+  .metric:last-child{border-bottom:none}
+  .metric:not(:first-child){padding-left:0}
+  #chat-win{width:calc(100vw - 28px);right:14px;bottom:90px}
+  footer{flex-direction:column;gap:16px;text-align:center;padding:32px 24px}
+  .detail-panel.show{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav id="nav">
+  <a href="#hero" class="logo">Samadi Consulting</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#assessment">Assessment</a></li>
+    <li><a href="#simulator">Simulator</a></li>
+  </ul>
+  <a href="https://calendly.com/samadi-ai/30min" target="_blank" class="nav-cta">Book a Call</a>
+</nav>
+
+<section id="hero">
+  <canvas class="hero-canvas" id="hero-canvas"></canvas>
+  <p class="hero-eyebrow" id="he">AI & Business Systems Consulting</p>
+  <h1 class="hero-title" id="ht">
+    <span class="line">Your Business Has</span>
+    <span class="line">a <span class="accent-word" id="accent-word">Systems</span></span>
+    <span class="line">Problem</span>
+  </h1>
+  <p class="hero-sub" id="hs">I design, build, and scale AI-powered business infrastructures that generate revenue, save time, and grow without you.</p>
+  <div class="hero-btns" id="hb">
+    <a href="#assessment" class="btn-primary">Take the Free Assessment <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    <a href="#simulator" class="btn-outline">See How It Works</a>
+  </div>
+  <div class="hero-metrics" id="hm">
+    <div class="metric"><div class="metric-val" id="m1">0</div><div class="metric-lbl">Systems Built</div></div>
+    <div class="metric"><div class="metric-val" id="m2">0%</div><div class="metric-lbl">Avg Revenue Increase</div></div>
+    <div class="metric"><div class="metric-val" id="m3">0h</div><div class="metric-lbl">Time Saved Weekly</div></div>
+  </div>
+</section>
+
+<section id="services">
+  <p class="s-tag reveal">What I Do</p>
+  <h2 class="s-title reveal">End-to-End Systems<br>Consulting</h2>
+  <p class="s-sub reveal">From strategy to execution — I don't just advise, I build alongside you.</p>
+  <div class="services-grid reveal">
+    <div class="svc-card"><div class="svc-num">01</div><div class="svc-line"></div><h3>AI Integration Consulting</h3><p>Strategic AI implementation tailored to your workflow — precision-fitted intelligence, not generic tools.</p></div>
+    <div class="svc-card"><div class="svc-num">02</div><div class="svc-line"></div><h3>End-to-End System Building</h3><p>I design and build the entire infrastructure — from database architecture to client-facing automation flows.</p></div>
+    <div class="svc-card"><div class="svc-num">03</div><div class="svc-line"></div><h3>Team Education & Adoption</h3><p>Training and onboarding so your team uses new systems confidently and consistently.</p></div>
+    <div class="svc-card"><div class="svc-num">04</div><div class="svc-line"></div><h3>Customer Acquisition Architecture</h3><p>Systematic lead generation and conversion funnels that operate 24/7 without manual intervention.</p></div>
+    <div class="svc-card"><div class="svc-num">05</div><div class="svc-line"></div><h3>Workflow Automation</h3><p>Eliminate repetitive tasks and bottlenecks — automate decisions, notifications, and data intelligently.</p></div>
+    <div class="svc-card"><div class="svc-num">06</div><div class="svc-line"></div><h3>Product Ecosystem Design</h3><p>Build interconnected product suites and service offerings that compound in value over time.</p></div>
+  </div>
+</section>
+
+<section id="philosophy">
+  <p class="s-tag reveal">Operating Philosophy</p>
+  <h2 class="s-title reveal">How I Think<br>& Build</h2>
+  <div class="phil-grid reveal">
+    <div class="phil-card"><div class="phil-num">01</div><h3>Clarity over Complexity</h3><p>The best system is one your team actually uses. I design for understanding first, sophistication second.</p></div>
+    <div class="phil-card"><div class="phil-num">02</div><h3>Leverage over Effort</h3><p>We look for the highest-leverage interventions — the changes that create 10x results, not 10% improvements.</p></div>
+    <div class="phil-card"><div class="phil-num">03</div><h3>Systems over Chaos</h3><p>Heroics don't scale. Repeatable, documented, intelligent systems do. That's what we build.</p></div>
+  </div>
+  <div class="quote-wrap reveal"><p>"Every solution I design is built to <strong>generate revenue</strong>, <strong>save time</strong>, and <strong>scale without increasing operational load</strong>."</p></div>
+</section>
+
+<section id="assessment">
+  <p class="s-tag reveal">Free Diagnostic</p>
+  <h2 class="s-title reveal">Diagnose Your Business<br>in 60 Seconds</h2>
+  <div class="assess-inner">
+    <div id="q-wrap">
+      <div class="q-meta">
+        <span class="q-step" id="q-step">01 / 05</span>
+        <div class="q-track"><div class="q-fill" id="q-fill" style="width:20%"></div></div>
+      </div>
+      <h3 class="q-question" id="q-q"></h3>
+      <div class="q-opts" id="q-opts"></div>
+      <div class="q-actions">
+        <button class="q-back-btn" id="q-bk" onclick="qBack()" style="visibility:hidden">Back</button>
+        <button class="q-next-btn" id="q-nx" onclick="qNext()">Continue</button>
+      </div>
+    </div>
+    <div class="result-panel" id="r-panel">
+      <div class="result-ring"><div class="result-score-num" id="r-num">0</div><div class="result-score-lbl">Score</div></div>
+      <h3 class="result-title" id="r-title"></h3>
+      <p class="result-desc" id="r-desc"></p>
+      <div class="result-actions">
+        <a href="https://calendly.com/samadi-ai/30min" target="_blank" class="btn-primary">Book a Free Strategy Call</a>
+        <button class="btn-outline" onclick="qReset()" style="cursor:pointer">Retake</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="simulator">
+  <p class="s-tag reveal">Interactive Tool</p>
+  <h2 class="s-title reveal">Your Business<br>Architecture</h2>
+  <p class="s-sub reveal">Click any node to explore how each component connects and what it does for your business.</p>
+  <div class="sim-container reveal">
+    <div class="sim-tabs">
+      <button class="sim-tab on" id="st-after" onclick="simMode('after')">Connected System</button>
+      <button class="sim-tab off" id="st-before" onclick="simMode('before')">Fragmented State</button>
+    </div>
+    <div class="flow-canvas" id="flow-canvas">
+      <svg id="flow-svg"></svg>
+    </div>
+    <div class="detail-panel" id="dp"></div>
+  </div>
+</section>
+
+<section id="talk" style="background:#060606;border-top:1px solid #1c1c1c;padding:120px 64px">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;max-width:1100px;margin:0 auto">
+    <div>
+      <p class="s-tag reveal">Talk to Us</p>
+      <h2 class="s-title reveal" style="margin-bottom:20px">Not sure where<br>to start?</h2>
+      <p class="s-sub reveal" style="margin-bottom:36px">Ask our AI assistant anything about our services, process, or how we can help your specific situation. No forms. No waiting.</p>
+      <div class="reveal" style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:center;gap:14px;padding:18px 22px;background:#0e0e0e;border:1px solid #1c1c1c;border-radius:14px">
+          <div style="width:36px;height:36px;border-radius:10px;background:#111;border:1px solid #1e1e1e;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span style="font-size:14px;color:#888;font-weight:300">Instant answers — no waiting</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;padding:18px 22px;background:#0e0e0e;border:1px solid #1c1c1c;border-radius:14px">
+          <div style="width:36px;height:36px;border-radius:10px;background:#111;border:1px solid #1e1e1e;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span style="font-size:14px;color:#888;font-weight:300">Speaks your language automatically</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;padding:18px 22px;background:#0e0e0e;border:1px solid #1c1c1c;border-radius:14px">
+          <div style="width:36px;height:36px;border-radius:10px;background:#111;border:1px solid #1e1e1e;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span style="font-size:14px;color:#888;font-weight:300">Books strategy calls automatically</span>
+        </div>
+      </div>
+    </div>
+    <div class="reveal" style="background:#0a0a0a;border:1px solid #1c1c1c;border-radius:22px;overflow:hidden;height:500px;display:flex;flex-direction:column">
+      <div style="padding:16px 20px;background:#0e0e0e;border-bottom:1px solid #111;display:flex;align-items:center;gap:12px">
+        <div style="width:34px;height:34px;border-radius:50%;background:#111;border:1px solid #222;display:flex;align-items:center;justify-content:center;font-family:Syne,sans-serif;font-size:10px;font-weight:800;color:#c8ff00">SC</div>
+        <div>
+          <div style="font-family:Syne,sans-serif;font-size:12px;font-weight:700;color:#f2f0ea">Samadi Consulting</div>
+          <div style="font-size:10px;color:#333;display:flex;align-items:center;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:#22c55e;display:inline-block"></span> AI Assistant — Online</div>
+        </div>
+      </div>
+      <div id="inline-msgs" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scrollbar-width:none"></div>
+      <div id="inline-qr" style="display:flex;flex-wrap:wrap;gap:5px;padding:8px 16px 4px"></div>
+      <div style="display:flex;gap:8px;padding:12px 16px;border-top:1px solid #111;background:#080808">
+        <input type="text" id="inline-inp" placeholder="Ask anything..." style="flex:1;background:#0e0e0e;border:1px solid #111;border-radius:20px;padding:9px 14px;font-size:12px;color:#f2f0ea;outline:none;font-family:'DM Sans',sans-serif"/>
+        <button onclick="inlineSend()" style="width:36px;height:36px;border-radius:50%;background:#c8ff00;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg viewBox="0 0 24 24" width="14" height="14"><path fill="#000" d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// INLINE CHAT
+let inlineMsgs=[],inlineFormDone=false,inlineStarted=false;
+function inlineAddMsg(text,sender){
+  const body=document.getElementById('inline-msgs');
+  const clean=text.replace(/\[SHOW_FORM\]/g,'').replace(/\[SHOW_BOOKING\]/g,'').trim();
+  const div=document.createElement('div');
+  div.style.cssText='max-width:86%;align-self:'+(sender==='b'?'flex-start':'flex-end');
+  const bubStyle=sender==='b'?'background:#111;border:1px solid #1a1a1a;color:#ccc;border-radius:16px;border-bottom-left-radius:4px;padding:10px 14px;font-size:12px;line-height:1.6':'background:#c8ff00;color:#000;border-radius:16px;border-bottom-right-radius:4px;padding:10px 14px;font-size:12px;font-weight:500;line-height:1.6';
+  div.innerHTML='<div style="'+bubStyle+'">'+clean+'</div>';
+  body.appendChild(div);
+  if(text.includes('[SHOW_FORM]')&&!inlineFormDone){
+    inlineFormDone=true;
+    const f=document.createElement('div');f.style.cssText='align-self:flex-start;max-width:90%';
+    f.innerHTML='<div style="background:#111;border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;border:1px solid #1a1a1a"><input id="if-n" placeholder="Your name" type="text" style="background:#060606;border:1px solid #111;border-radius:8px;padding:8px 12px;font-size:11px;color:#fff;outline:none;width:100%"/><input id="if-e" placeholder="Your email" type="email" style="background:#060606;border:1px solid #111;border-radius:8px;padding:8px 12px;font-size:11px;color:#fff;outline:none;width:100%"/><button onclick="inlineSubmitLead()" style="background:#c8ff00;color:#000;border:none;border-radius:8px;padding:8px;font-size:11px;cursor:pointer;font-weight:700">Send my details</button></div>';
+    body.appendChild(f);
+  }
+  if(text.includes('[SHOW_BOOKING]')){
+    const bk=document.createElement('div');bk.style.cssText='align-self:flex-start;max-width:86%';
+    bk.innerHTML='<div style="background:#111;border:1px solid #1a1a1a;border-radius:16px;border-bottom-left-radius:4px;padding:10px 14px;font-size:12px"><a href="https://calendly.com/samadi-ai/30min" target="_blank" style="color:#c8ff00;text-decoration:underline">Book your free 15-min strategy call</a></div>';
+    body.appendChild(bk);
+  }
+  body.scrollTop=body.scrollHeight;
+}
+function inlineSubmitLead(){
+  const n=document.getElementById('if-n').value.trim();
+  const e=document.getElementById('if-e').value.trim();
+  if(!n||!e){alert('Please fill name and email');return;}
+  sendLeadToSheet(n,e,'','inline-chatbot');inlineAddMsg(n+' | '+e,'u');
+  inlineSendToBot('My details: Name: '+n+', Email: '+e);
+}
+function inlineSetQR(replies){
+  const qr=document.getElementById('inline-qr');qr.innerHTML='';
+  replies.forEach(r=>{const b=document.createElement('button');b.style.cssText='font-size:10px;padding:6px 11px;border-radius:20px;border:1px solid #1a1a1a;background:transparent;color:#555;cursor:pointer;transition:all 0.2s;font-family:DM Sans,sans-serif';b.textContent=r;b.onmouseenter=()=>{b.style.borderColor='#c8ff00';b.style.color='#c8ff00';};b.onmouseleave=()=>{b.style.borderColor='#1a1a1a';b.style.color='#555';};b.onclick=()=>{qr.innerHTML='';inlineHandleSend(r);};qr.appendChild(b);});
+}
+function inlineShowTyping(){
+  const body=document.getElementById('inline-msgs');
+  const t=document.createElement('div');t.id='inline-typing';t.style.cssText='align-self:flex-start';
+  t.innerHTML='<div style="background:#111;border:1px solid #1a1a1a;border-radius:16px;border-bottom-left-radius:4px;padding:10px 14px;display:flex;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:#333;animation:tdot 1.4s infinite;display:block"></span><span style="width:5px;height:5px;border-radius:50%;background:#333;animation:tdot 1.4s 0.2s infinite;display:block"></span><span style="width:5px;height:5px;border-radius:50%;background:#333;animation:tdot 1.4s 0.4s infinite;display:block"></span></div>';
+  body.appendChild(t);body.scrollTop=body.scrollHeight;
+}
+function inlineHideTyping(){const t=document.getElementById('inline-typing');if(t)t.remove();}
+async function inlineSendToBot(text){
+  inlineMsgs.push({role:'user',content:text});inlineShowTyping();
+  try{
+    const res=await fetch('https://samadi-proxy.samadi-ai-consulting.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-opus-4-6',max_tokens:600,system:CSYS,messages:inlineMsgs})});
+    if(!res.ok)throw new Error('err');
+    const data=await res.json();const reply=data.content[0].text;
+    inlineMsgs.push({role:'assistant',content:reply});inlineHideTyping();inlineAddMsg(reply,'b');
+    if(inlineMsgs.length===2)inlineSetQR(["How do you work?","What's your process?","Book a call","What does it cost?"]);
+  }catch(e){inlineHideTyping();inlineMsgs.pop();inlineAddMsg('Reach Naser directly: samadi.ai@hotmail.com','b');}
+}
+function inlineHandleSend(text){
+  const inp=document.getElementById('inline-inp');
+  const msg=text||inp.value.trim();if(!msg)return;
+  inp.value='';document.getElementById('inline-qr').innerHTML='';
+  inlineAddMsg(msg,'u');inlineSendToBot(msg);
+}
+function inlineSend(){inlineHandleSend();}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('inline-inp').addEventListener('keypress',e=>{if(e.key==='Enter')inlineHandleSend();});
+  // Auto-start inline chat when visible
+  const inlineObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting&&!inlineStarted){
+        inlineStarted=true;
+        setTimeout(()=>{inlineAddMsg("Hey — ask me anything about Samadi Consulting, our services, or how we can help your business. I'm here to help.",'b');inlineSetQR(["What do you do?","How can you help me?","I want to automate my business","What's the investment?"]);},400);
+      }
+    });
+  },{threshold:0.3});
+  const talkSection=document.getElementById('talk');
+  if(talkSection)inlineObs.observe(talkSection);
+});
+</script>
+
+<section id="testimonials">
+  <p class="s-tag reveal">Social Proof</p>
+  <h2 class="s-title reveal">What Clients<br>Are Saying</h2>
+  <div class="testi-outer reveal">
+    <div class="testi-track" id="t-track">
+      <div class="testi-card"><div class="t-stars"><div class="t-star"></div><div class="t-star"></div><div class="t-star"></div><div class="t-star"></div><div class="t-star"></div></div><p class="t-text">"Before working together, our team was drowning in manual tasks. Six weeks later, we had a fully automated lead pipeline and our conversion rate tripled. It wasn't consulting — it was transformation."</p><div class="t-author"><div class="t-av">JM</div><div><div class="t-name">James Mitchell</div><div class="t-role">CEO, Apex Digital Group</div></div></div></div>
+      <div class="testi-card"><div class="t-stars"><div class="t-star"></div><div class="t-star"></div><div class="t-star"></div><div class="t-star"></div><div class="t-star"></div></div><p class="t-text">"The systems we built together freed up 30 hours a week for my team. We went from reacting to everything to running on autopilot. I finally have a business that doesn't need me every minute."</p><div class="t-author"><div class="t-av">SR</div><div><div class="t-name">Sarah Reeves</div><div class="t-role">Founder, Momentum Agency</div></div></div></div>
+      <div class="testi-card"><div class="t-stars"><div class="t-star"></div><div class="t-star"></div><div class="t-star"></div><div class="t-star"></div><div class="t-star"></div></div><p class="t-text">"I came in skeptical about AI in our operations. After the education sessions and custom build, our entire team adopted the system in two weeks. Revenue is up 40% and we're scaling with the same headcount."</p><div class="t-author"><div class="t-av">DK</div><div><div class="t-name">David Kim</div><div class="t-role">COO, Nexus Technologies</div></div></div></div>
+    </div>
+    <div class="t-nav">
+      <button class="t-dot on" onclick="tGo(0)"></button>
+      <button class="t-dot" onclick="tGo(1)"></button>
+      <button class="t-dot" onclick="tGo(2)"></button>
+    </div>
+  </div>
+</section>
+
+<section id="cta">
+  <div class="cta-bg"></div>
+  <p class="s-tag reveal" style="justify-content:center;display:block;text-align:center">Ready to Scale?</p>
+  <h2 class="cta-title reveal">Ready to Build a Business<br>That <span class="accent">Runs Without You?</span></h2>
+  <p class="cta-sub reveal">Let's design your system together.</p>
+  <div class="cta-btns reveal">
+    <a href="https://calendly.com/samadi-ai/30min" target="_blank" class="btn-primary">Book a Free Strategy Call</a>
+    <a href="mailto:samadi.ai@hotmail.com" class="btn-outline">samadi.ai@hotmail.com</a>
+  </div>
+</section>
+
+<footer>
+  <ul class="f-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#assessment">Assessment</a></li>
+    <li><a href="https://calendly.com/samadi-ai/30min" target="_blank">Book a Call</a></li>
+    <li><a href="mailto:samadi.ai@hotmail.com">Email</a></li>
+  </ul>
+  <p class="f-copy">Built with AI Systems Thinking — Samadi Consulting 2025</p>
+</footer>
+
+<!-- CHATBOT -->
+<button id="chat-fab" class="pulse" onclick="chatToggle()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+
+<div id="chat-win">
+  <div id="chat-hd">
+    <div class="c-logo">SC</div>
+    <div class="c-info">
+      <div class="c-info-name">Samadi Consulting</div>
+      <div class="c-info-status"><span class="c-dot"></span> AI Assistant — Always On</div>
+    </div>
+  </div>
+  <div id="chat-body"></div>
+  <div id="chat-qr"></div>
+  <div id="chat-foot">
+    <input type="text" id="chat-inp" placeholder="Ask anything about our services..." />
+    <button id="chat-snd" onclick="chatSend()">
+      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+// CURSOR
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a,button,.svc-card,.phil-card,.flow-node,.q-opt,.testi-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='6px';cur.style.height='6px';ring.style.width='60px';ring.style.height='60px';ring.style.opacity='0.3';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='12px';cur.style.height='12px';ring.style.width='40px';ring.style.height='40px';ring.style.opacity='0.6';});
+});
+
+// NAV SCROLL
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40);});
+
+// HERO CANVAS PARTICLE
+const hc=document.getElementById('hero-canvas');
+const hx=hc.getContext('2d');
+let pts=[];
+function resizeCanvas(){hc.width=hc.offsetWidth;hc.height=hc.offsetHeight;pts=[];for(let i=0;i<80;i++)pts.push({x:Math.random()*hc.width,y:Math.random()*hc.height,vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.4,r:Math.random()*1.5+0.5});}
+resizeCanvas();
+window.addEventListener('resize',resizeCanvas);
+function drawCanvas(){
+  hx.clearRect(0,0,hc.width,hc.height);
+  pts.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>hc.width)p.vx*=-1;
+    if(p.y<0||p.y>hc.height)p.vy*=-1;
+    hx.beginPath();hx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    hx.fillStyle='rgba(200,255,0,0.15)';hx.fill();
+  });
+  pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{
+    const d=Math.hypot(a.x-b.x,a.y-b.y);
+    if(d<120){hx.beginPath();hx.moveTo(a.x,a.y);hx.lineTo(b.x,b.y);hx.strokeStyle='rgba(200,255,0,'+(0.04*(1-d/120))+')';hx.stroke();}
+  }));
+  requestAnimationFrame(drawCanvas);
+}
+drawCanvas();
+
+// HERO ENTRANCE
+window.addEventListener('load',()=>{
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.to('#he',{opacity:1,y:0,duration:0.8,delay:0.3,ease:'power3.out'});
+  gsap.to('#ht',{opacity:1,y:0,duration:1,delay:0.5,ease:'power3.out'});
+  gsap.to('#hs',{opacity:1,y:0,duration:0.8,delay:0.8,ease:'power3.out'});
+  gsap.to('#hb',{opacity:1,y:0,duration:0.8,delay:1,ease:'power3.out'});
+  gsap.to('#hm',{opacity:1,duration:0.8,delay:1.2,ease:'power2.out'});
+  setTimeout(()=>{
+    countUp('m1',47,'',1800);
+    countUp('m2',340,'%',2000);
+    countUp('m3',28,'h',1600);
+  },1400);
+  // Accent word rotation
+  const words=['Systems','People','Traffic','Strategy'];
+  let wi=0;
+  setInterval(()=>{
+    wi=(wi+1)%words.length;
+    const el=document.getElementById('accent-word');
+    el.style.opacity='0';el.style.transform='translateY(-10px)';
+    setTimeout(()=>{el.textContent=words[wi];el.style.opacity='1';el.style.transform='translateY(0)';el.style.transition='all 0.4s';},300);
+  },2800);
+});
+
+function countUp(id,target,suffix,dur){
+  let s=0;const el=document.getElementById(id);
+  const step=target/(dur/16);
+  const t=setInterval(()=>{s+=step;if(s>=target){el.textContent=target+suffix;clearInterval(t);}else el.textContent=Math.floor(s)+suffix;},16);
+}
+
+// SCROLL REVEAL
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ASSESSMENT
+const qs=[
+  {q:"What stage is your business at?",opts:["Early Stage (0-1 years)","Growth Stage (1-3 years)","Scaling Stage (3+ years)","Enterprise"]},
+  {q:"What is your biggest challenge?",opts:["Lead generation & acquisition","Operations & team management","Sales conversion & revenue","Technology & automation"]},
+  {q:"How automated is your business?",opts:["0% — Everything is manual","25% — Some tools, no system","50% — Partial automation","75%+ — Mostly automated"]},
+  {q:"Monthly revenue range?",opts:["Pre-revenue","$1K–$10K","$10K–$50K","$50K+"]},
+  {q:"What outcome matters most?",opts:["More leads & clients","More time & freedom","Scalable operations","Data-driven growth"]}
+];
+let qi=0,qa=[];
+function qRender(){
+  document.getElementById('q-step').textContent=(qi+1<10?'0':'')+(qi+1)+' / 0'+qs.length;
+  document.getElementById('q-fill').style.width=((qi+1)/qs.length*100)+'%';
+  document.getElementById('q-q').textContent=qs[qi].q;
+  const opts=document.getElementById('q-opts');opts.innerHTML='';
+  qs[qi].opts.forEach((o,i)=>{
+    const b=document.createElement('button');b.className='q-opt'+(qa[qi]===i?' sel':'');
+    b.textContent=o;b.onclick=()=>{qa[qi]=i;document.querySelectorAll('.q-opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};
+    opts.appendChild(b);
+  });
+  document.getElementById('q-bk').style.visibility=qi>0?'visible':'hidden';
+  document.getElementById('q-nx').textContent=qi===qs.length-1?'See Results':'Continue';
+}
+function qNext(){if(qa[qi]===undefined){const b=document.getElementById('q-nx');b.style.background='#ff4444';b.textContent='Select an option';setTimeout(()=>{b.style.background='';b.textContent=qi===qs.length-1?'See Results':'Continue';},1200);return;}if(qi<qs.length-1){qi++;qRender();}else qShow();}
+function qBack(){if(qi>0){qi--;qRender();}}
+function qShow(){
+  const score=Math.round(30+(qa.reduce((a,b)=>a+b,0)/(qs.length*3))*65);
+  document.getElementById('q-wrap').style.display='none';
+  const rp=document.getElementById('r-panel');rp.style.display='block';
+  let n=0;const t=setInterval(()=>{n+=2;if(n>=score){document.getElementById('r-num').textContent=score;clearInterval(t);}else document.getElementById('r-num').textContent=n;},20);
+  if(score<45){document.getElementById('r-title').textContent='Early Stage — Foundation Needed';document.getElementById('r-desc').textContent='Your business needs core systems before scaling. The right infrastructure now saves 10x the cost later. Let\'s build your foundation correctly from day one.';}
+  else if(score<65){document.getElementById('r-title').textContent='Growth Stage — Ready to Systematize';document.getElementById('r-desc').textContent='You have traction but manual processes are holding you back. A focused 6-week build could 2-3x your output without adding headcount.';}
+  else{document.getElementById('r-title').textContent='Scaling Stage — Automate at Speed';document.getElementById('r-desc').textContent='Strong foundations in place. AI-powered automation will compound your growth dramatically. The gap between where you are and where you could be is mostly systems.';}
+}
+function qReset(){qi=0;qa=[];document.getElementById('r-panel').style.display='none';document.getElementById('q-wrap').style.display='block';qRender();}
+qRender();
+
+// SIMULATOR
+const flowNodes=[
+  {id:'lg',title:'Lead Generation',cat:'Acquisition',x:15,y:30,does:'Automated multi-channel lead capture from LinkedIn, ads, and content',without:'Manual prospecting wastes 3-4 hours daily with inconsistent results',builds:'Apollo + n8n + Clay personalized outreach sequences',icon:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'},
+  {id:'crm',title:'CRM & Nurture',cat:'Acquisition',x:35,y:30,does:'Intelligent lead scoring, tagging, and automated multi-step nurture sequences',without:'Leads go cold — follow-up is inconsistent and manual',builds:'GoHighLevel CRM with AI-powered sequence logic',icon:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'},
+  {id:'ai',title:'AI Core System',cat:'Intelligence',x:55,y:50,does:'Claude API integration powering every intelligent decision across your business',without:'Responses are slow, generic, and inconsistent across touchpoints',builds:'Claude API + n8n central automation backbone',icon:'<circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>'},
+  {id:'sales',title:'Sales Process',cat:'Conversion',x:35,y:70,does:'Automated proposal generation, follow-up sequences, and closing workflows',without:'Deals stall because follow-up falls through the cracks',builds:'Automated Calendly + proposal + smart follow-up system',icon:'<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>'},
+  {id:'ops',title:'Operations',cat:'Fulfillment',x:15,y:70,does:'Project delivery workflows, client onboarding, and automated reporting dashboards',without:'Each project runs differently — team overwhelmed, quality inconsistent',builds:'Notion + automated onboarding + reporting pipeline',icon:'<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>'},
+  {id:'analytics',title:'Analytics',cat:'Growth',x:75,y:30,does:'Real-time dashboards tracking revenue, leads, conversions, and operational KPIs',without:'Decisions are based on gut feel, not data — blind spots everywhere',builds:'Custom n8n dashboards + Google Sheets automated reporting',icon:'<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>'},
+  {id:'content',title:'Content Engine',cat:'Growth',x:75,y:70,does:'AI-powered content creation, scheduling, and multi-platform distribution automation',without:'Content is sporadic — no system, no consistency, no compounding',builds:'Claude API + Buffer + repurposing automation stack',icon:'<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>'}
+];
+const connections=[['lg','crm'],['crm','ai'],['ai','sales'],['ai','analytics'],['ai','content'],['sales','ops'],['ops','crm'],['analytics','lg']];
+let activeNode=null,currentMode='after';
+
+function simMode(m){
+  currentMode=m;
+  document.getElementById('st-after').className='sim-tab '+(m==='after'?'on':'off');
+  document.getElementById('st-before').className='sim-tab '+(m==='before'?'on':'off');
+  renderFlow();
+  document.getElementById('dp').className='detail-panel';
+  activeNode=null;
+}
+
+function renderFlow(){
+  const canvas=document.getElementById('flow-canvas');
+  const w=canvas.offsetWidth,h=canvas.offsetHeight;
+  canvas.innerHTML='<svg id="flow-svg"></svg>';
+  const svg=document.getElementById('flow-svg');
+  if(currentMode==='after'){
+    connections.forEach(([a,b])=>{
+      const na=flowNodes.find(n=>n.id===a),nb=flowNodes.find(n=>n.id===b);
+      const x1=na.x/100*w,y1=na.y/100*h,x2=nb.x/100*w,y2=nb.y/100*h;
+      const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+      const mx=(x1+x2)/2;
+      path.setAttribute('d',`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`);
+      path.setAttribute('fill','none');path.setAttribute('stroke','rgba(200,255,0,0.12)');path.setAttribute('stroke-width','1.5');
+      svg.appendChild(path);
+    });
+  }
+  flowNodes.forEach(n=>{
+    const el=document.createElement('div');
+    el.className='flow-node'+(currentMode==='before'?' broken':'')+(activeNode===n.id?' active':'');
+    el.style.left=(n.x)+'%';el.style.top=(n.y)+'%';
+    el.innerHTML=`<div class="fn-inner"><div class="fn-icon"><svg viewBox="0 0 24 24">${n.icon}</svg></div><div class="fn-title">${n.title}</div><div class="fn-cat">${n.cat}</div></div>`;
+    el.onclick=()=>showDetail(n);
+    canvas.appendChild(el);
+  });
+}
+
+function showDetail(n){
+  activeNode=n.id;renderFlow();
+  const dp=document.getElementById('dp');
+  dp.className='detail-panel show';
+  dp.innerHTML=`<div class="dp-col"><h4>${n.title}</h4><p>${n.does}</p></div><div class="dp-col"><h5>Without it</h5><p>${n.without}</p></div><div class="dp-col"><h5>What I build</h5><p>${n.builds}</p></div>`;
+}
+
+window.addEventListener('resize',renderFlow);
+setTimeout(renderFlow,100);
+
+// TESTIMONIALS
+let ti=0;
+function tGo(i){ti=i;const tr=document.getElementById('t-track');const w=tr.children[0].offsetWidth+20;tr.style.transform='translateX(-'+(i*w)+'px)';document.querySelectorAll('.t-dot').forEach((d,j)=>d.className='t-dot'+(j===i?' on':''));}
+setInterval(()=>tGo((ti+1)%3),5500);
+
+// CHATBOT
+const CSYS=`You are the AI sales assistant for Naser Samadi, founder of Samadi Consulting.
+
+ABOUT SAMADI CONSULTING:
+Naser is a high-level AI and business systems consultant, builder, and educator based in Morocco. He helps entrepreneurs, CEOs, and growing teams (11-50 employees) build AI-powered systems that generate revenue, automate operations, and scale efficiently without adding headcount.
+
+SERVICES:
+- AI Integration Consulting: Strategic AI implementation tailored to workflows
+- End-to-End System Building: Complete infrastructure from database to automation
+- Team Education & Adoption: Training teams to operate systems independently  
+- Customer Acquisition Architecture: Automated lead gen and conversion funnels
+- Workflow Automation: Eliminating manual tasks with intelligent automation
+- Product Ecosystem Design: Interconnected services that compound in value
+
+PHILOSOPHY: Clarity over Complexity. Leverage over Effort. Systems over Chaos.
+Website: samadiconsulting.netlify.app
+Book a call: https://calendly.com/samadi-ai/30min
+Email: samadi.ai@hotmail.com
+
+QUALIFICATION APPROACH:
+1. Understand their business and team size
+2. Identify their biggest operational pain point
+3. Assess their current automation level
+4. Align their goals with specific services
+5. Guide toward booking a free 15-min strategy call
+
+RESPONSE RULES:
+- Keep replies to 2-4 sentences maximum
+- Be direct, warm, and confident — sound human, not corporate
+- Detect language and reply in same language automatically
+- Never say you are an AI unless directly and explicitly asked
+- Never make up specific prices — always say pricing depends on scope and direct to call
+- After collecting name and email, acknowledge it warmly
+- Use [SHOW_FORM] tag in your reply when you want to collect their contact details (after 2-3 exchanges)
+- Use [SHOW_BOOKING] tag when pushing hard for a call booking
+- NEVER refuse to answer questions about the business
+- If asked something you don't know, be honest and offer to connect them with Naser directly`;
+
+let chatHistory=[],formDone=false,chatIsOpen=false;
+
+function chatToggle(){
+  chatIsOpen=!chatIsOpen;
+  document.getElementById('chat-win').classList.toggle('open',chatIsOpen);
+  document.getElementById('chat-fab').classList.toggle('pulse',!chatIsOpen);
+  if(chatIsOpen&&chatHistory.length===0){
+    setTimeout(()=>{
+      chatAddMsg("Hey — welcome to Samadi Consulting. I'm here to help you figure out if we're the right fit for what you're building. What brings you here today?",'b');
+      chatSetQR(["I want to automate my business","Tell me about your services","How do you work with clients?","What does this cost?"]);
+    },400);
+  }
+}
+
+function chatAddMsg(text,sender){
+  const body=document.getElementById('chat-body');
+  const clean=text.replace(/\[SHOW_FORM\]/g,'').replace(/\[SHOW_BOOKING\]/g,'').trim();
+  const div=document.createElement('div');div.className='cm '+sender;
+  const t=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  div.innerHTML='<div class="cm-bub">'+clean+'</div><div class="cm-time">'+t+'</div>';
+  body.appendChild(div);
+  if(text.includes('[SHOW_FORM]')&&!formDone){
+    formDone=true;
+    const f=document.createElement('div');f.className='cm b';
+    f.innerHTML='<div class="c-form"><input id="cf-n" placeholder="Your name" type="text"/><input id="cf-e" placeholder="Your email" type="email"/><input id="cf-c" placeholder="Your company (optional)" type="text"/><button onclick="chatSubmitLead()">Share my details</button></div>';
+    body.appendChild(f);
+  }
+  if(text.includes('[SHOW_BOOKING]')){
+    const bk=document.createElement('div');bk.className='cm b';
+    bk.innerHTML='<div class="cm-bub"><a class="c-link" href="https://calendly.com/samadi-ai/30min" target="_blank">Book your free 15-min strategy call here</a></div>';
+    body.appendChild(bk);
+  }
+  body.scrollTop=body.scrollHeight;
+}
+
+function sendLeadToSheet(name,email,company,source){fetch("https://suzan-gleesome-expediently.ngrok-free.dev/webhook/chatbot-lead",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,email,company,source,date:new Date().toISOString()})}).catch(()=>{});}
+function chatSubmitLead(){
+  const n=document.getElementById('cf-n').value.trim();
+  const e=document.getElementById('cf-e').value.trim();
+  const c=document.getElementById('cf-c').value.trim();
+  if(!n||!e){alert('Please fill in your name and email');return;}
+  sendLeadToSheet(n,e,c,'floating-chatbot');chatAddMsg(n+' | '+e+(c?' | '+c:''),'u');
+  chatSendToBot('My contact details: Name: '+n+', Email: '+e+(c?', Company: '+c:''));
+}
+
+function chatSetQR(replies){
+  const qr=document.getElementById('chat-qr');qr.innerHTML='';
+  replies.forEach(r=>{const b=document.createElement('button');b.className='cq';b.textContent=r;b.onclick=()=>{qr.innerHTML='';chatHandleSend(r);};qr.appendChild(b);});
+}
+
+function chatShowTyping(){
+  const body=document.getElementById('chat-body');
+  const t=document.createElement('div');t.id='typing-ind';t.className='cm b';
+  t.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';
+  body.appendChild(t);body.scrollTop=body.scrollHeight;
+}
+function chatHideTyping(){const t=document.getElementById('typing-ind');if(t)t.remove();}
+
+async function chatSendToBot(text){
+  chatHistory.push({role:'user',content:text});
+  chatShowTyping();
+  try{
+    const res=await fetch('https://samadi-proxy.samadi-ai-consulting.workers.dev',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-opus-4-6',max_tokens:800,system:CSYS,messages:chatHistory})
+    });
+    if(!res.ok){throw new Error('API error: '+res.status);}
+    const data=await res.json();
+    if(!data.content||!data.content[0]){throw new Error('Invalid response');}
+    const reply=data.content[0].text;
+    chatHistory.push({role:'assistant',content:reply});
+    chatHideTyping();
+    chatAddMsg(reply,'b');
+    if(chatHistory.length===2)chatSetQR(["Tell me more","What's your process?","How long does it take?","I'm ready to book a call"]);
+    else if(chatHistory.length===4)chatSetQR(["Book a strategy call","What results can I expect?","How much does it cost?","Let's get started"]);
+  }catch(err){
+    chatHideTyping();
+    chatHistory.pop();
+    chatAddMsg("I'm having a brief connection issue. You can reach Naser directly at samadi.ai@hotmail.com or book a call at calendly.com/samadi-ai/30min",'b');
+  }
+}
+
+function chatHandleSend(text){
+  const inp=document.getElementById('chat-inp');
+  const msg=text||inp.value.trim();
+  if(!msg)return;
+  inp.value='';
+  document.getElementById('chat-qr').innerHTML='';
+  chatAddMsg(msg,'u');
+  chatSendToBot(msg);
+}
+
+function chatSend(){chatHandleSend();}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('chat-inp').addEventListener('keypress',e=>{if(e.key==='Enter')chatHandleSend();});
+});
+</script>
+</body>
+</html>
