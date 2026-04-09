@@ -86,31 +86,83 @@ section{padding:120px 64px}
 .quote-wrap p{font-family:'Syne',sans-serif;font-size:clamp(20px,2.8vw,32px);font-weight:700;line-height:1.35;letter-spacing:-0.5px;position:relative;z-index:1}
 .quote-wrap strong{color:var(--accent)}
 
-/* ASSESSMENT */
-#assessment{background:var(--card);border-top:1px solid var(--border)}
-.assess-inner{max-width:720px;margin:72px auto 0}
-.q-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px}
-.q-step{font-size:12px;color:#444;font-family:'Syne',sans-serif;letter-spacing:1px}
-.q-track{flex:1;height:2px;background:var(--border);margin:0 24px;border-radius:1px;overflow:hidden}
-.q-fill{height:100%;background:var(--accent);border-radius:1px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1)}
-.q-question{font-family:'Syne',sans-serif;font-size:clamp(22px,3vw,34px);font-weight:700;margin-bottom:40px;letter-spacing:-0.5px;line-height:1.2}
-.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:44px}
-.q-opt{background:#0a0a0a;border:1px solid var(--border);color:#888;padding:18px 22px;border-radius:14px;font-size:14px;cursor:pointer;text-align:left;transition:all 0.2s;font-family:'DM Sans',sans-serif;line-height:1.4}
-.q-opt:hover{border-color:#333;color:var(--white)}
-.q-opt.sel{border-color:var(--accent);color:var(--accent);background:#0a0a0a}
-.q-actions{display:flex;justify-content:space-between;align-items:center}
-.q-back-btn{background:transparent;color:#444;border:1px solid var(--border);padding:14px 26px;border-radius:100px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
-.q-back-btn:hover{color:var(--white);border-color:#333}
-.q-next-btn{background:var(--accent);color:var(--black);border:none;padding:14px 34px;border-radius:100px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.2s}
-.q-next-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(200,255,0,0.2)}
-.result-panel{display:none;text-align:center;padding:72px 48px;background:#0a0a0a;border:1px solid var(--border);border-radius:20px}
-.result-ring{width:140px;height:140px;border-radius:50%;border:2px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 32px;position:relative}
-.result-ring::before{content:'';position:absolute;inset:-4px;border-radius:50%;background:conic-gradient(var(--accent) 0%,transparent 0%);transition:background 1s}
-.result-score-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:var(--accent);line-height:1}
-.result-score-lbl{font-size:10px;color:#444;letter-spacing:2px;text-transform:uppercase;margin-top:2px}
-.result-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;margin-bottom:14px;letter-spacing:-0.3px}
-.result-desc{font-size:15px;color:#666;line-height:1.75;margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;font-weight:300}
-.result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+/* ============================================
+   ASSESSMENT — FULL REDESIGN
+   ============================================ */
+#assessment{background:var(--black);border-top:1px solid var(--border);padding:120px 64px}
+
+.assess-wrap{max-width:760px;margin:0 auto}
+
+/* Step tracker */
+.assess-tracker{display:flex;align-items:center;gap:0;margin-bottom:56px}
+.at-step{display:flex;align-items:center;gap:10px;flex:1}
+.at-dot{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:#333;transition:all 0.4s;flex-shrink:0}
+.at-dot.done{background:var(--accent);border-color:var(--accent);color:var(--black)}
+.at-dot.active{border-color:var(--accent);color:var(--accent)}
+.at-line{flex:1;height:1px;background:var(--border);transition:background 0.4s}
+.at-line.done{background:var(--accent)}
+
+/* Question */
+.assess-q-area{animation:assessFade 0.4s ease}
+@keyframes assessFade{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.assess-q-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);font-family:'Syne',sans-serif;margin-bottom:20px}
+.assess-q-text{font-family:'Syne',sans-serif;font-size:clamp(22px,3vw,36px);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:40px}
+.assess-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:44px}
+.assess-opt{background:#0a0a0a;border:1px solid var(--border);color:#666;padding:20px 22px;border-radius:14px;font-size:14px;cursor:pointer;text-align:left;transition:all 0.2s;font-family:'DM Sans',sans-serif;line-height:1.45;position:relative;overflow:hidden}
+.assess-opt::before{content:'';position:absolute;inset:0;background:rgba(200,255,0,0.03);opacity:0;transition:opacity 0.2s}
+.assess-opt:hover{border-color:#333;color:var(--white)}
+.assess-opt:hover::before{opacity:1}
+.assess-opt.sel{border-color:var(--accent);color:var(--accent);background:#080808}
+.assess-opt.sel::before{opacity:1}
+.assess-nav{display:flex;justify-content:space-between;align-items:center}
+.assess-back{background:transparent;color:#333;border:1px solid var(--border);padding:13px 26px;border-radius:100px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.assess-back:hover{color:#888;border-color:#333}
+.assess-next{background:var(--accent);color:var(--black);border:none;padding:13px 34px;border-radius:100px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;letter-spacing:0.3px;transition:all 0.2s;opacity:0.35;pointer-events:none}
+.assess-next.ready{opacity:1;pointer-events:all}
+.assess-next.ready:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(200,255,0,0.2)}
+
+/* Email capture */
+.assess-email-area{animation:assessFade 0.4s ease;text-align:center}
+.assess-email-icon{width:64px;height:64px;border-radius:50%;border:1px solid var(--border);background:#0a0a0a;display:flex;align-items:center;justify-content:center;margin:0 auto 28px}
+.assess-email-icon svg{width:24px;height:24px;stroke:var(--accent);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.assess-email-area h3{font-family:'Syne',sans-serif;font-size:clamp(20px,2.5vw,30px);font-weight:800;letter-spacing:-0.5px;margin-bottom:14px}
+.assess-email-area p{font-size:15px;color:#555;line-height:1.7;margin-bottom:36px;font-weight:300;max-width:480px;margin-left:auto;margin-right:auto}
+.assess-inputs{display:flex;flex-direction:column;gap:10px;max-width:420px;margin:0 auto 20px}
+.assess-input{background:#0a0a0a;border:1px solid var(--border);border-radius:12px;padding:15px 18px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;width:100%}
+.assess-input::placeholder{color:#2a2a2a}
+.assess-input:focus{border-color:#333}
+.assess-submit{width:100%;max-width:420px;margin:0 auto;display:block;background:var(--accent);color:var(--black);border:none;border-radius:100px;padding:16px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.3px;cursor:pointer;transition:all 0.2s}
+.assess-submit:hover{transform:translateY(-1px);box-shadow:0 10px 32px rgba(200,255,0,0.2)}
+.assess-privacy{font-size:12px;color:#333;margin-top:12px;text-align:center}
+
+/* Loading */
+.assess-loading{text-align:center;padding:48px 0;animation:assessFade 0.3s ease}
+.assess-spinner{width:44px;height:44px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 24px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.assess-loading p{font-size:14px;color:#555;font-weight:300}
+
+/* Result */
+.assess-result{animation:assessFade 0.5s ease}
+.assess-result-top{background:#0a0a0a;border:1px solid var(--border);border-radius:20px;padding:44px;margin-bottom:16px;position:relative;overflow:hidden}
+.assess-result-top::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),rgba(200,255,0,0.2),transparent)}
+.ar-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(200,255,0,0.08);border:1px solid rgba(200,255,0,0.2);color:var(--accent);font-size:10px;font-family:'Syne',sans-serif;letter-spacing:3px;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:24px}
+.ar-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.ar-title{font-family:'Syne',sans-serif;font-size:clamp(20px,2.8vw,32px);font-weight:800;letter-spacing:-0.8px;line-height:1.2;margin-bottom:14px}
+.ar-title span{color:var(--accent)}
+.ar-desc{font-size:15px;color:#555;line-height:1.75;font-weight:300}
+.assess-services{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.as-item{background:#0a0a0a;border:1px solid var(--border);border-radius:14px;padding:20px 22px;display:flex;align-items:flex-start;gap:16px;transition:border-color 0.2s}
+.as-item:hover{border-color:#2a2a2a}
+.as-icon{width:40px;height:40px;border-radius:10px;background:#111;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.as-icon svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.as-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:4px}
+.as-desc{font-size:13px;color:#555;line-height:1.6;font-weight:300}
+.assess-risk{background:rgba(200,255,0,0.04);border:1px solid rgba(200,255,0,0.12);border-radius:14px;padding:18px 22px;font-size:14px;color:#666;line-height:1.7;margin-bottom:16px}
+.assess-risk strong{color:var(--accent);font-weight:500}
+.assess-cta-btn{width:100%;background:var(--accent);color:var(--black);border:none;border-radius:100px;padding:18px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;letter-spacing:0.3px;cursor:pointer;transition:all 0.2s;margin-bottom:10px;display:block;text-align:center;text-decoration:none}
+.assess-cta-btn:hover{transform:translateY(-1px);box-shadow:0 12px 40px rgba(200,255,0,0.25)}
+.assess-sent-note{font-size:12px;color:#333;text-align:center;margin-top:12px}
 
 /* SIMULATOR */
 #simulator{background:var(--black);border-top:1px solid var(--border)}
@@ -220,9 +272,9 @@ footer{padding:44px 64px;border-top:1px solid var(--border);display:flex;justify
 
 @media(max-width:900px){
   nav{padding:18px 24px}.nav-links{display:none}
-  section,#hero,#cta{padding:80px 24px}
+  section,#hero,#cta,#assessment{padding:80px 24px}
   .services-grid,.phil-grid{grid-template-columns:1fr}
-  .q-opts{grid-template-columns:1fr}
+  .assess-opts{grid-template-columns:1fr}
   .hero-metrics{flex-direction:column;gap:0}
   .metric{border-right:none;border-bottom:1px solid var(--border);padding:24px 0}
   .metric:last-child{border-bottom:none}
@@ -294,31 +346,60 @@ footer{padding:44px 64px;border-top:1px solid var(--border);display:flex;justify
   <div class="quote-wrap reveal"><p>"Every solution I design is built to <strong>generate revenue</strong>, <strong>save time</strong>, and <strong>scale without increasing operational load</strong>."</p></div>
 </section>
 
+<!-- ============================================
+     ASSESSMENT — FULL AI-POWERED SECTION
+     ============================================ -->
 <section id="assessment">
-  <p class="s-tag reveal">Free Diagnostic</p>
-  <h2 class="s-title reveal">Diagnose Your Business<br>in 60 Seconds</h2>
-  <div class="assess-inner">
-    <div id="q-wrap">
-      <div class="q-meta">
-        <span class="q-step" id="q-step">01 / 05</span>
-        <div class="q-track"><div class="q-fill" id="q-fill" style="width:20%"></div></div>
-      </div>
-      <h3 class="q-question" id="q-q"></h3>
-      <div class="q-opts" id="q-opts"></div>
-      <div class="q-actions">
-        <button class="q-back-btn" id="q-bk" onclick="qBack()" style="visibility:hidden">Back</button>
-        <button class="q-next-btn" id="q-nx" onclick="qNext()">Continue</button>
+  <p class="s-tag reveal">Free AI Audit</p>
+  <h2 class="s-title reveal">Find Out What AI Can<br>Actually Do For Your Business</h2>
+  <p class="s-sub reveal">5 questions. A custom AI growth plan. If we don't deliver results, you don't pay.</p>
+
+  <div class="assess-wrap reveal">
+
+    <!-- Step tracker -->
+    <div class="assess-tracker" id="assess-tracker">
+      <div class="at-step"><div class="at-dot active" id="at-1">1</div></div>
+      <div class="at-line" id="al-1"></div>
+      <div class="at-step"><div class="at-dot" id="at-2">2</div></div>
+      <div class="at-line" id="al-2"></div>
+      <div class="at-step"><div class="at-dot" id="at-3">3</div></div>
+      <div class="at-line" id="al-3"></div>
+      <div class="at-step"><div class="at-dot" id="at-4">4</div></div>
+      <div class="at-line" id="al-4"></div>
+      <div class="at-step"><div class="at-dot" id="at-5">5</div></div>
+    </div>
+
+    <!-- Question area -->
+    <div id="assess-q-area"></div>
+
+    <!-- Email capture -->
+    <div id="assess-email-area" style="display:none">
+      <div class="assess-email-area">
+        <div class="assess-email-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <h3>Your AI strategy is ready</h3>
+        <p>Enter your details and we'll send you a custom breakdown of exactly what AI systems would work for your business — with realistic outcomes and pricing ranges.</p>
+        <div class="assess-inputs">
+          <input type="text" class="assess-input" id="assess-name" placeholder="Your name" />
+          <input type="email" class="assess-input" id="assess-email" placeholder="Business email address" />
+        </div>
+        <button class="assess-submit" onclick="assessSubmit()">Send my AI strategy →</button>
+        <p class="assess-privacy">No spam. One email with your results. That's it.</p>
       </div>
     </div>
-    <div class="result-panel" id="r-panel">
-      <div class="result-ring"><div class="result-score-num" id="r-num">0</div><div class="result-score-lbl">Score</div></div>
-      <h3 class="result-title" id="r-title"></h3>
-      <p class="result-desc" id="r-desc"></p>
-      <div class="result-actions">
-        <a href="https://calendly.com/samadi-ai/30min" target="_blank" class="btn-primary">Book a Free Strategy Call</a>
-        <button class="btn-outline" onclick="qReset()" style="cursor:pointer">Retake</button>
+
+    <!-- Loading -->
+    <div id="assess-loading" style="display:none">
+      <div class="assess-loading">
+        <div class="assess-spinner"></div>
+        <p>Analyzing your business profile...</p>
       </div>
     </div>
+
+    <!-- Result -->
+    <div id="assess-result" style="display:none"></div>
+
   </div>
 </section>
 
@@ -346,21 +427,15 @@ footer{padding:44px 64px;border-top:1px solid var(--border);display:flex;justify
       <p class="s-sub reveal" style="margin-bottom:36px">Ask our AI assistant anything about our services, process, or how we can help your specific situation. No forms. No waiting.</p>
       <div class="reveal" style="display:flex;flex-direction:column;gap:14px">
         <div style="display:flex;align-items:center;gap:14px;padding:18px 22px;background:#0e0e0e;border:1px solid #1c1c1c;border-radius:14px">
-          <div style="width:36px;height:36px;border-radius:10px;background:#111;border:1px solid #1e1e1e;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
+          <div style="width:36px;height:36px;border-radius:10px;background:#111;border:1px solid #1e1e1e;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
           <span style="font-size:14px;color:#888;font-weight:300">Instant answers — no waiting</span>
         </div>
         <div style="display:flex;align-items:center;gap:14px;padding:18px 22px;background:#0e0e0e;border:1px solid #1c1c1c;border-radius:14px">
-          <div style="width:36px;height:36px;border-radius:10px;background:#111;border:1px solid #1e1e1e;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
+          <div style="width:36px;height:36px;border-radius:10px;background:#111;border:1px solid #1e1e1e;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
           <span style="font-size:14px;color:#888;font-weight:300">Speaks your language automatically</span>
         </div>
         <div style="display:flex;align-items:center;gap:14px;padding:18px 22px;background:#0e0e0e;border:1px solid #1c1c1c;border-radius:14px">
-          <div style="width:36px;height:36px;border-radius:10px;background:#111;border:1px solid #1e1e1e;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
+          <div style="width:36px;height:36px;border-radius:10px;background:#111;border:1px solid #1e1e1e;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
           <span style="font-size:14px;color:#888;font-weight:300">Books strategy calls automatically</span>
         </div>
       </div>
@@ -370,7 +445,7 @@ footer{padding:44px 64px;border-top:1px solid var(--border);display:flex;justify
         <div style="width:34px;height:34px;border-radius:50%;background:#111;border:1px solid #222;display:flex;align-items:center;justify-content:center;font-family:Syne,sans-serif;font-size:10px;font-weight:800;color:#c8ff00">SC</div>
         <div>
           <div style="font-family:Syne,sans-serif;font-size:12px;font-weight:700;color:#f2f0ea">Samadi Consulting</div>
-          <div style="font-size:10px;color:#333;display:flex;align-items:center;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:#22c55e;display:inline-block"></span> AI Assistant — Online</div>
+          <div style="font-size:10px;color:#333;display:flex;align-items:center;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:#22c55e;display:inline-block"></span> AI Advisor — Online</div>
         </div>
       </div>
       <div id="inline-msgs" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scrollbar-width:none"></div>
@@ -384,81 +459,6 @@ footer{padding:44px 64px;border-top:1px solid var(--border);display:flex;justify
     </div>
   </div>
 </section>
-
-<script>
-// INLINE CHAT
-let inlineMsgs=[],inlineFormDone=false,inlineStarted=false;
-function inlineAddMsg(text,sender){
-  const body=document.getElementById('inline-msgs');
-  const clean=text.replace(/\[SHOW_FORM\]/g,'').replace(/\[SHOW_BOOKING\]/g,'').trim();
-  const div=document.createElement('div');
-  div.style.cssText='max-width:86%;align-self:'+(sender==='b'?'flex-start':'flex-end');
-  const bubStyle=sender==='b'?'background:#111;border:1px solid #1a1a1a;color:#ccc;border-radius:16px;border-bottom-left-radius:4px;padding:10px 14px;font-size:12px;line-height:1.6':'background:#c8ff00;color:#000;border-radius:16px;border-bottom-right-radius:4px;padding:10px 14px;font-size:12px;font-weight:500;line-height:1.6';
-  div.innerHTML='<div style="'+bubStyle+'">'+clean+'</div>';
-  body.appendChild(div);
-  if(text.includes('[SHOW_FORM]')&&!inlineFormDone){
-    inlineFormDone=true;
-    const f=document.createElement('div');f.style.cssText='align-self:flex-start;max-width:90%';
-    f.innerHTML='<div style="background:#111;border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;border:1px solid #1a1a1a"><input id="if-n" placeholder="Your name" type="text" style="background:#060606;border:1px solid #111;border-radius:8px;padding:8px 12px;font-size:11px;color:#fff;outline:none;width:100%"/><input id="if-e" placeholder="Your email" type="email" style="background:#060606;border:1px solid #111;border-radius:8px;padding:8px 12px;font-size:11px;color:#fff;outline:none;width:100%"/><button onclick="inlineSubmitLead()" style="background:#c8ff00;color:#000;border:none;border-radius:8px;padding:8px;font-size:11px;cursor:pointer;font-weight:700">Send my details</button></div>';
-    body.appendChild(f);
-  }
-  if(text.includes('[SHOW_BOOKING]')){
-    const bk=document.createElement('div');bk.style.cssText='align-self:flex-start;max-width:86%';
-    bk.innerHTML='<div style="background:#111;border:1px solid #1a1a1a;border-radius:16px;border-bottom-left-radius:4px;padding:10px 14px;font-size:12px"><a href="https://calendly.com/samadi-ai/30min" target="_blank" style="color:#c8ff00;text-decoration:underline">Book your free 15-min strategy call</a></div>';
-    body.appendChild(bk);
-  }
-  body.scrollTop=body.scrollHeight;
-}
-function inlineSubmitLead(){
-  const n=document.getElementById('if-n').value.trim();
-  const e=document.getElementById('if-e').value.trim();
-  if(!n||!e){alert('Please fill name and email');return;}
-  sendLeadToSheet(n,e,'','inline-chatbot');inlineAddMsg(n+' | '+e,'u');
-  inlineSendToBot('My details: Name: '+n+', Email: '+e);
-}
-function inlineSetQR(replies){
-  const qr=document.getElementById('inline-qr');qr.innerHTML='';
-  replies.forEach(r=>{const b=document.createElement('button');b.style.cssText='font-size:10px;padding:6px 11px;border-radius:20px;border:1px solid #1a1a1a;background:transparent;color:#555;cursor:pointer;transition:all 0.2s;font-family:DM Sans,sans-serif';b.textContent=r;b.onmouseenter=()=>{b.style.borderColor='#c8ff00';b.style.color='#c8ff00';};b.onmouseleave=()=>{b.style.borderColor='#1a1a1a';b.style.color='#555';};b.onclick=()=>{qr.innerHTML='';inlineHandleSend(r);};qr.appendChild(b);});
-}
-function inlineShowTyping(){
-  const body=document.getElementById('inline-msgs');
-  const t=document.createElement('div');t.id='inline-typing';t.style.cssText='align-self:flex-start';
-  t.innerHTML='<div style="background:#111;border:1px solid #1a1a1a;border-radius:16px;border-bottom-left-radius:4px;padding:10px 14px;display:flex;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:#333;animation:tdot 1.4s infinite;display:block"></span><span style="width:5px;height:5px;border-radius:50%;background:#333;animation:tdot 1.4s 0.2s infinite;display:block"></span><span style="width:5px;height:5px;border-radius:50%;background:#333;animation:tdot 1.4s 0.4s infinite;display:block"></span></div>';
-  body.appendChild(t);body.scrollTop=body.scrollHeight;
-}
-function inlineHideTyping(){const t=document.getElementById('inline-typing');if(t)t.remove();}
-async function inlineSendToBot(text){
-  inlineMsgs.push({role:'user',content:text});inlineShowTyping();
-  try{
-    const res=await fetch('https://samadi-proxy.samadi-ai-consulting.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-opus-4-6',max_tokens:600,system:CSYS,messages:inlineMsgs})});
-    if(!res.ok)throw new Error('err');
-    const data=await res.json();const reply=data.content[0].text;
-    inlineMsgs.push({role:'assistant',content:reply});inlineHideTyping();inlineAddMsg(reply,'b');
-    if(inlineMsgs.length===2)inlineSetQR(["How do you work?","What's your process?","Book a call","What does it cost?"]);
-  }catch(e){inlineHideTyping();inlineMsgs.pop();inlineAddMsg('Reach Naser directly: samadi.ai@hotmail.com','b');}
-}
-function inlineHandleSend(text){
-  const inp=document.getElementById('inline-inp');
-  const msg=text||inp.value.trim();if(!msg)return;
-  inp.value='';document.getElementById('inline-qr').innerHTML='';
-  inlineAddMsg(msg,'u');inlineSendToBot(msg);
-}
-function inlineSend(){inlineHandleSend();}
-document.addEventListener('DOMContentLoaded',()=>{
-  document.getElementById('inline-inp').addEventListener('keypress',e=>{if(e.key==='Enter')inlineHandleSend();});
-  // Auto-start inline chat when visible
-  const inlineObs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting&&!inlineStarted){
-        inlineStarted=true;
-        setTimeout(()=>{inlineAddMsg("Hey — ask me anything about Samadi Consulting, our services, or how we can help your business. I'm here to help.",'b');inlineSetQR(["What do you do?","How can you help me?","I want to automate my business","What's the investment?"]);},400);
-      }
-    });
-  },{threshold:0.3});
-  const talkSection=document.getElementById('talk');
-  if(talkSection)inlineObs.observe(talkSection);
-});
-</script>
 
 <section id="testimonials">
   <p class="s-tag reveal">Social Proof</p>
@@ -484,7 +484,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   <p class="cta-sub reveal">Let's design your system together.</p>
   <div class="cta-btns reveal">
     <a href="https://calendly.com/samadi-ai/30min" target="_blank" class="btn-primary">Book a Free Strategy Call</a>
-    <a href="mailto:samadi.ai@hotmail.com" class="btn-outline">samadi.ai@hotmail.com</a>
+    <a href="mailto:samadi.ai.consulting@gmail.com" class="btn-outline">samadi.ai.consulting@gmail.com</a>
   </div>
 </section>
 
@@ -494,12 +494,12 @@ document.addEventListener('DOMContentLoaded',()=>{
     <li><a href="#philosophy">Philosophy</a></li>
     <li><a href="#assessment">Assessment</a></li>
     <li><a href="https://calendly.com/samadi-ai/30min" target="_blank">Book a Call</a></li>
-    <li><a href="mailto:samadi.ai@hotmail.com">Email</a></li>
+    <li><a href="mailto:samadi.ai.consulting@gmail.com">Email</a></li>
   </ul>
   <p class="f-copy">Built with AI Systems Thinking — Samadi Consulting 2025</p>
 </footer>
 
-<!-- CHATBOT -->
+<!-- CHATBOT FAB -->
 <button id="chat-fab" class="pulse" onclick="chatToggle()">
   <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
 </button>
@@ -509,7 +509,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     <div class="c-logo">SC</div>
     <div class="c-info">
       <div class="c-info-name">Samadi Consulting</div>
-      <div class="c-info-status"><span class="c-dot"></span> AI Assistant — Always On</div>
+      <div class="c-info-status"><span class="c-dot"></span> AI Advisor — Always On</div>
     </div>
   </div>
   <div id="chat-body"></div>
@@ -523,13 +523,471 @@ document.addEventListener('DOMContentLoaded',()=>{
 </div>
 
 <script>
+// ============================================
+// CHATBOT SYSTEM PROMPT — STRATEGIC ADVISOR
+// ============================================
+const CSYS = `You are the AI business advisor for Samadi Consulting — an AI and digital systems consultancy that builds, deploys, and manages AI-powered systems for businesses that want to grow without hiring an army of people.
+
+You are NOT a customer support bot. You are a strategic business advisor who helps business owners identify their biggest leverage point and shows them exactly how AI can solve it — with real outcomes, not vague promises.
+
+YOUR PERSONALITY:
+- Direct, sharp, and confident — like a smart advisor who has seen it all
+- You speak like a founder, not a salesperson
+- You diagnose first, then prescribe — never pitch without understanding the business
+- Honest: if AI cannot help them, you say so
+- You detect the language the visitor writes in and reply in that same language automatically
+
+SERVICES YOU KNOW COLD:
+Growth & Revenue:
+- Cold Outreach Machine: automated lead scraping (Apollo/Clay), personalized cold emails daily via n8n, booked calls on autopilot. Performance-based pricing: pay per booked call.
+- Full AI Sales Pipeline: scraping + enrichment + multi-step sequences + CRM auto-update. First 30 days free if zero calls booked.
+- AI E-commerce Growth System: product copy rewriting, abandoned cart sequences, ad copy testing weekly.
+
+Marketing & Content:
+- AI Content Engine: 30 days of posts done in a weekend, auto-posted via Buffer. Client approves once.
+- AI Email Newsletter: weekly newsletter fully automated — Claude drafts, client approves in 5 min or it goes out.
+- AI Marketing Department: full marketing outsource powered entirely by AI.
+
+Operations & Support:
+- AI Customer Support Bot: trained chatbot for website + WhatsApp, handles 80% of inbound questions 24/7.
+- AI-Powered HR & Onboarding: CV screening, rejection/acceptance emails, onboarding drips, HR FAQ bot.
+- AI Reporting & Business Intelligence: weekly KPI summary sent to CEO every Monday, zero analyst needed.
+
+Enterprise:
+- AI Integration Audit + Roadmap: find where AI saves the company €50K/year. One-time €4K–€8K. Trojan horse into retainers.
+- Custom AI Workflow Build: map the bottleneck, eliminate it with n8n. €3K–€8K build + €1.5K–€3K/month retainer.
+- AI Agent for Internal Operations: custom AI employee handling ops, reporting, coordination 24/7.
+
+ZERO-RISK MODELS (use these when relevant):
+- Pay-per-result: cold outreach pay per booked call only
+- 30-day free pilot: run the system, pay only if satisfied
+- Performance add-on: flat fee + % of revenue increase above baseline
+
+HOW YOU HANDLE CONVERSATIONS:
+Step 1 — Ask ONE smart question to understand their business. Examples:
+  "What is taking up the most time in your business right now that you wish was automated?"
+  "Are you struggling more with getting new clients, managing existing ones, or running operations?"
+  "What does your current sales process look like?"
+
+Step 2 — Diagnose: map their pain to the right service category.
+  Not enough leads → Cold Outreach Machine or Full AI Sales Pipeline
+  No time for content → AI Content Engine or AI Marketing Department
+  Too many support questions → AI Customer Support Bot
+  Ops chaos → Custom AI Workflow or AI Agent
+  No performance visibility → AI Reporting & BI
+  Hiring/HR headaches → AI HR & Onboarding
+
+Step 3 — Prescribe with confidence. Name the specific service. Explain what they get, what the outcome looks like, and what risk they take (hint: very little).
+
+Step 4 — Close toward a discovery call. Always end with a push toward booking.
+  Use [SHOW_BOOKING] tag when pushing for a call.
+  Use [SHOW_FORM] tag when ready to capture their contact details (after 2-3 exchanges).
+
+RESPONSE RULES:
+- Maximum 3 sentences per reply — be sharp, not verbose
+- Never give generic advice
+- Never be vague about what a service does
+- Never invent prices — say pricing depends on scope, ranges available on the call
+- Never say you are an AI unless directly and explicitly asked
+- Always end with a question or a clear next step
+- Calendly: https://calendly.com/samadi-ai/30min
+- Email: samadi.ai.consulting@gmail.com`;
+
+// ============================================
+// ASSESSMENT ENGINE
+// ============================================
+const assessQuestions = [
+  {
+    id: 'size',
+    label: 'Question 1 — Your Business',
+    text: 'How big is your business right now?',
+    opts: [
+      { label: 'Solo or freelancer — just me', val: 'solo' },
+      { label: '2–10 people — small team', val: 'small' },
+      { label: '11–50 people — growing company', val: 'medium' },
+      { label: '50+ people — established company', val: 'large' }
+    ]
+  },
+  {
+    id: 'pain',
+    label: 'Question 2 — Your Challenge',
+    text: 'What is your biggest challenge right now?',
+    opts: [
+      { label: 'Not enough leads or clients coming in', val: 'leads' },
+      { label: 'No time to create content or market consistently', val: 'content' },
+      { label: 'Operations are chaotic — too much manual work', val: 'ops' },
+      { label: 'Customer support is eating our time', val: 'support' },
+      { label: 'No visibility on what is actually working', val: 'reporting' }
+    ]
+  },
+  {
+    id: 'goal',
+    label: 'Question 3 — Your Goal',
+    text: 'What outcome matters most in the next 90 days?',
+    opts: [
+      { label: 'More booked calls and meetings', val: 'calls' },
+      { label: 'A content machine that runs without me', val: 'autopilot' },
+      { label: 'Automated systems saving 10+ hours per week', val: 'automation' },
+      { label: 'Clear visibility on business performance', val: 'clarity' }
+    ]
+  },
+  {
+    id: 'risk',
+    label: 'Question 4 — Your Preference',
+    text: 'How do you prefer to work with a provider?',
+    opts: [
+      { label: 'Pay only when I see real results', val: 'performance' },
+      { label: 'Small pilot first, then scale if it works', val: 'pilot' },
+      { label: 'Monthly retainer — I want full commitment', val: 'retainer' },
+      { label: 'One-time project with a clear deliverable', val: 'oneoff' }
+    ]
+  },
+  {
+    id: 'budget',
+    label: 'Question 5 — Your Budget',
+    text: 'What monthly budget are you working with?',
+    opts: [
+      { label: 'Under €500 — very lean', val: 'micro' },
+      { label: '€500–€2,000 — reasonable', val: 'small' },
+      { label: '€2,000–€6,000 — serious investment', val: 'medium' },
+      { label: '€6,000+ — enterprise level', val: 'large' }
+    ]
+  }
+];
+
+const serviceIcons = {
+  leads: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  content: '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>',
+  ops: '<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>',
+  support: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  reporting: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>'
+};
+
+const serviceData = {
+  leads: { name: 'Cold Outreach Machine', desc: 'We scrape your ideal clients, write personalized emails, and send them daily. You get booked calls on autopilot — and pay only when calls are booked.' },
+  content: { name: 'AI Content Engine', desc: '30 days of posts across LinkedIn, Instagram, and Facebook — done in a weekend and auto-posted via Buffer. Client approves once, then forgets about it.' },
+  ops: { name: 'Custom AI Workflow', desc: 'We map your biggest operational bottleneck and eliminate it with a custom automation. No more manual chaos, no more repetitive tasks eating your team.' },
+  support: { name: 'AI Customer Support Bot', desc: 'A trained chatbot handles 80% of your inbound questions 24/7 — on your website and WhatsApp. Your team only sees what actually needs a human.' },
+  reporting: { name: 'AI Business Intelligence', desc: 'Every Monday morning, your CEO gets a plain-English performance summary — KPIs, anomalies, wins. Built automatically. Zero analyst needed.' }
+};
+
+const riskDescriptions = {
+  performance: 'pay-per-result — you only pay when you see booked calls or measurable outcomes',
+  pilot: 'a free 30-day pilot so you can see results before committing to anything',
+  retainer: 'a full monthly retainer with dedicated build time and ongoing iteration',
+  oneoff: 'a one-time scoped build with clear deliverables and full handoff'
+};
+
+let assessAnswers = {};
+let assessStep = 0;
+
+function assessUpdateTracker() {
+  for (let i = 1; i <= 5; i++) {
+    const dot = document.getElementById('at-' + i);
+    const line = document.getElementById('al-' + i);
+    if (i < assessStep + 1) {
+      dot.className = 'at-dot done';
+      dot.innerHTML = '✓';
+      if (line) line.className = 'at-line done';
+    } else if (i === assessStep + 1) {
+      dot.className = 'at-dot active';
+      dot.innerHTML = i;
+      if (line) line.className = 'at-line';
+    } else {
+      dot.className = 'at-dot';
+      dot.innerHTML = i;
+      if (line) line.className = 'at-line';
+    }
+  }
+}
+
+function assessRender() {
+  const q = assessQuestions[assessStep];
+  const area = document.getElementById('assess-q-area');
+  const selectedVal = assessAnswers[q.id];
+
+  area.innerHTML = `
+    <div class="assess-q-area">
+      <div class="assess-q-label">${q.label}</div>
+      <div class="assess-q-text">${q.text}</div>
+      <div class="assess-opts">
+        ${q.opts.map(o => `
+          <button class="assess-opt${selectedVal === o.val ? ' sel' : ''}" onclick="assessSelect('${o.val}', this)">
+            ${o.label}
+          </button>
+        `).join('')}
+      </div>
+      <div class="assess-nav">
+        <button class="assess-back" onclick="assessBack()" style="visibility:${assessStep > 0 ? 'visible' : 'hidden'}">← Back</button>
+        <button class="assess-next${selectedVal ? ' ready' : ''}" id="assess-next-btn" onclick="assessNext()">
+          ${assessStep < assessQuestions.length - 1 ? 'Next →' : 'Get My Strategy →'}
+        </button>
+      </div>
+    </div>
+  `;
+  assessUpdateTracker();
+}
+
+function assessSelect(val, el) {
+  const q = assessQuestions[assessStep];
+  assessAnswers[q.id] = val;
+  document.querySelectorAll('.assess-opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+  const btn = document.getElementById('assess-next-btn');
+  if (btn) btn.classList.add('ready');
+}
+
+function assessNext() {
+  const q = assessQuestions[assessStep];
+  if (!assessAnswers[q.id]) return;
+  assessStep++;
+  if (assessStep < assessQuestions.length) {
+    assessRender();
+  } else {
+    showEmailCapture();
+  }
+}
+
+function assessBack() {
+  if (assessStep > 0) {
+    assessStep--;
+    assessRender();
+  }
+}
+
+function showEmailCapture() {
+  document.getElementById('assess-q-area').innerHTML = '';
+  document.getElementById('assess-tracker').style.display = 'none';
+  document.getElementById('assess-email-area').style.display = 'block';
+  // Mark all steps done
+  for (let i = 1; i <= 5; i++) {
+    const dot = document.getElementById('at-' + i);
+    if (dot) { dot.className = 'at-dot done'; dot.innerHTML = '✓'; }
+    const line = document.getElementById('al-' + i);
+    if (line) line.className = 'at-line done';
+  }
+}
+
+async function assessSubmit() {
+  const name = document.getElementById('assess-name').value.trim();
+  const email = document.getElementById('assess-email').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('assess-email').style.borderColor = 'rgba(255,60,60,0.5)';
+    return;
+  }
+
+  document.getElementById('assess-email-area').style.display = 'none';
+  document.getElementById('assess-loading').style.display = 'block';
+
+  // Build result data
+  const result = buildAssessResult(name);
+
+  // Fire n8n webhook
+  try {
+    await fetch('https://n8n-production-bb2e.up.railway.app/webhook/samadi-assessment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name, email,
+        answers: assessAnswers,
+        recommended_services: result.services.map(s => s.name),
+        profile: result.profile,
+        risk_model: result.riskModel,
+        timestamp: new Date().toISOString()
+      })
+    });
+  } catch(e) { console.log('Webhook non-blocking error:', e); }
+
+  setTimeout(() => {
+    document.getElementById('assess-loading').style.display = 'none';
+    showAssessResult(result, name);
+  }, 2400);
+}
+
+function buildAssessResult(name) {
+  const pain = assessAnswers.pain || 'ops';
+  const goal = assessAnswers.goal;
+  const risk = assessAnswers.risk;
+  const size = assessAnswers.size;
+
+  const primary = serviceData[pain];
+  const services = [{ ...primary, icon: serviceIcons[pain] }];
+
+  // Secondary service based on goal
+  const goalMap = { calls: 'leads', autopilot: 'content', automation: 'ops', clarity: 'reporting' };
+  const secKey = goalMap[goal];
+  if (secKey && secKey !== pain) {
+    services.push({ ...serviceData[secKey], icon: serviceIcons[secKey] });
+  }
+
+  // Third if budget allows
+  if ((assessAnswers.budget === 'medium' || assessAnswers.budget === 'large') && services.length < 3) {
+    const extras = Object.keys(serviceData).filter(k => !services.find(s => s.name === serviceData[k].name));
+    if (extras[0]) services.push({ ...serviceData[extras[0]], icon: serviceIcons[extras[0]] });
+  }
+
+  const profiles = { solo: 'a lean solo operator', small: 'a small but ambitious team', medium: 'a scaling company', large: 'an established organization' };
+
+  return {
+    profile: profiles[size] || 'your business',
+    services,
+    riskModel: riskDescriptions[risk] || 'a model that works for your situation'
+  };
+}
+
+function showAssessResult(result, name) {
+  const greeting = name ? name.split(' ')[0] : 'Here';
+  const container = document.getElementById('assess-result');
+
+  container.innerHTML = `
+    <div class="assess-result">
+      <div class="assess-result-top">
+        <div class="ar-badge">Your AI strategy</div>
+        <div class="ar-title">${name ? name.split(' ')[0] + ', here' : 'Here'}'s what we'd build for <span>your business</span></div>
+        <p class="ar-desc">Based on your answers, you're ${result.profile} with a challenge that AI can solve fast. Here's exactly what we'd recommend:</p>
+      </div>
+      <div class="assess-services">
+        ${result.services.map(s => `
+          <div class="as-item">
+            <div class="as-icon"><svg viewBox="0 0 24 24" width="18" height="18" stroke="#c8ff00" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${s.icon}</svg></div>
+            <div>
+              <div class="as-name">${s.name}</div>
+              <div class="as-desc">${s.desc}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="assess-risk">
+        Based on how you like to work, we'd start with <strong>${result.riskModel}</strong>. If we don't deliver measurable results, you don't pay. That's our standard.
+      </div>
+      <a href="https://calendly.com/samadi-ai/30min" target="_blank" class="assess-cta-btn">Book a free 20-min strategy call →</a>
+      <p class="assess-sent-note">✓ A detailed version of this has been sent to your email</p>
+    </div>
+  `;
+
+  container.style.display = 'block';
+}
+
+// Init assessment on load
+document.addEventListener('DOMContentLoaded', () => { assessRender(); });
+
+// ============================================
+// INLINE CHAT (Talk section)
+// ============================================
+let inlineMsgs=[], inlineFormDone=false, inlineStarted=false;
+
+function inlineAddMsg(text, sender) {
+  const body = document.getElementById('inline-msgs');
+  const clean = text.replace(/\[SHOW_FORM\]/g,'').replace(/\[SHOW_BOOKING\]/g,'').trim();
+  const div = document.createElement('div');
+  div.style.cssText = 'max-width:86%;align-self:'+(sender==='b'?'flex-start':'flex-end');
+  const bubStyle = sender==='b'
+    ? 'background:#111;border:1px solid #1a1a1a;color:#ccc;border-radius:16px;border-bottom-left-radius:4px;padding:10px 14px;font-size:12px;line-height:1.6'
+    : 'background:#c8ff00;color:#000;border-radius:16px;border-bottom-right-radius:4px;padding:10px 14px;font-size:12px;font-weight:500;line-height:1.6';
+  div.innerHTML = '<div style="'+bubStyle+'">'+clean+'</div>';
+  body.appendChild(div);
+  if (text.includes('[SHOW_FORM]') && !inlineFormDone) {
+    inlineFormDone = true;
+    const f = document.createElement('div'); f.style.cssText='align-self:flex-start;max-width:90%';
+    f.innerHTML='<div style="background:#111;border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;border:1px solid #1a1a1a"><input id="if-n" placeholder="Your name" type="text" style="background:#060606;border:1px solid #111;border-radius:8px;padding:8px 12px;font-size:11px;color:#fff;outline:none;width:100%"/><input id="if-e" placeholder="Your email" type="email" style="background:#060606;border:1px solid #111;border-radius:8px;padding:8px 12px;font-size:11px;color:#fff;outline:none;width:100%"/><button onclick="inlineSubmitLead()" style="background:#c8ff00;color:#000;border:none;border-radius:8px;padding:8px;font-size:11px;cursor:pointer;font-weight:700">Send my details</button></div>';
+    body.appendChild(f);
+  }
+  if (text.includes('[SHOW_BOOKING]')) {
+    const bk=document.createElement('div'); bk.style.cssText='align-self:flex-start;max-width:86%';
+    bk.innerHTML='<div style="background:#111;border:1px solid #1a1a1a;border-radius:16px;border-bottom-left-radius:4px;padding:10px 14px;font-size:12px"><a href="https://calendly.com/samadi-ai/30min" target="_blank" style="color:#c8ff00;text-decoration:underline">Book your free 20-min strategy call</a></div>';
+    body.appendChild(bk);
+  }
+  body.scrollTop = body.scrollHeight;
+}
+
+function inlineSubmitLead() {
+  const n=document.getElementById('if-n').value.trim();
+  const e=document.getElementById('if-e').value.trim();
+  if(!n||!e){alert('Please fill name and email');return;}
+  sendLeadToWebhook(n,e,'','inline-chatbot');
+  inlineAddMsg(n+' | '+e,'u');
+  inlineSendToBot('My details: Name: '+n+', Email: '+e);
+}
+
+function inlineSetQR(replies) {
+  const qr=document.getElementById('inline-qr'); qr.innerHTML='';
+  replies.forEach(r=>{
+    const b=document.createElement('button');
+    b.style.cssText='font-size:10px;padding:6px 11px;border-radius:20px;border:1px solid #1a1a1a;background:transparent;color:#555;cursor:pointer;transition:all 0.2s;font-family:DM Sans,sans-serif';
+    b.textContent=r;
+    b.onmouseenter=()=>{b.style.borderColor='#c8ff00';b.style.color='#c8ff00';};
+    b.onmouseleave=()=>{b.style.borderColor='#1a1a1a';b.style.color='#555';};
+    b.onclick=()=>{qr.innerHTML='';inlineHandleSend(r);};
+    qr.appendChild(b);
+  });
+}
+
+function inlineShowTyping() {
+  const body=document.getElementById('inline-msgs');
+  const t=document.createElement('div'); t.id='inline-typing'; t.style.cssText='align-self:flex-start';
+  t.innerHTML='<div style="background:#111;border:1px solid #1a1a1a;border-radius:16px;border-bottom-left-radius:4px;padding:10px 14px;display:flex;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:#333;animation:tdot 1.4s infinite;display:block"></span><span style="width:5px;height:5px;border-radius:50%;background:#333;animation:tdot 1.4s 0.2s infinite;display:block"></span><span style="width:5px;height:5px;border-radius:50%;background:#333;animation:tdot 1.4s 0.4s infinite;display:block"></span></div>';
+  body.appendChild(t); body.scrollTop=body.scrollHeight;
+}
+function inlineHideTyping(){const t=document.getElementById('inline-typing');if(t)t.remove();}
+
+async function inlineSendToBot(text) {
+  inlineMsgs.push({role:'user',content:text}); inlineShowTyping();
+  try {
+    const res=await fetch('https://samadi-proxy.samadi-ai-consulting.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-opus-4-6',max_tokens:600,system:CSYS,messages:inlineMsgs})});
+    if(!res.ok)throw new Error('err');
+    const data=await res.json(); const reply=data.content[0].text;
+    inlineMsgs.push({role:'assistant',content:reply}); inlineHideTyping(); inlineAddMsg(reply,'b');
+    if(inlineMsgs.length===2) inlineSetQR(["How do you work?","What services do you offer?","Book a call","What does it cost?"]);
+  } catch(e) {
+    inlineHideTyping(); inlineMsgs.pop();
+    inlineAddMsg('Reach us directly: samadi.ai.consulting@gmail.com','b');
+  }
+}
+
+function inlineHandleSend(text) {
+  const inp=document.getElementById('inline-inp');
+  const msg=text||inp.value.trim(); if(!msg)return;
+  inp.value=''; document.getElementById('inline-qr').innerHTML='';
+  inlineAddMsg(msg,'u'); inlineSendToBot(msg);
+}
+function inlineSend(){inlineHandleSend();}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('inline-inp').addEventListener('keypress',e=>{if(e.key==='Enter')inlineHandleSend();});
+  const inlineObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting&&!inlineStarted){
+        inlineStarted=true;
+        setTimeout(()=>{
+          inlineAddMsg("What's the one thing your business does manually right now that you wish just happened automatically?",'b');
+          inlineSetQR(["Lead generation","Content & marketing","Operations & ops","Customer support","I'm not sure yet"]);
+        },400);
+      }
+    });
+  },{threshold:0.3});
+  const talkSection=document.getElementById('talk');
+  if(talkSection)inlineObs.observe(talkSection);
+});
+
+// ============================================
+// LEAD WEBHOOK
+// ============================================
+function sendLeadToWebhook(name,email,company,source){
+  fetch('https://n8n-production-bb2e.up.railway.app/webhook/consulting-lead',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name,email,company,source,date:new Date().toISOString()})
+  }).catch(()=>{});
+}
+
+// ============================================
 // CURSOR
+// ============================================
 const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
 function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
 animRing();
-document.querySelectorAll('a,button,.svc-card,.phil-card,.flow-node,.q-opt,.testi-card').forEach(el=>{
+document.querySelectorAll('a,button,.svc-card,.phil-card,.flow-node,.assess-opt,.testi-card').forEach(el=>{
   el.addEventListener('mouseenter',()=>{cur.style.width='6px';cur.style.height='6px';ring.style.width='60px';ring.style.height='60px';ring.style.opacity='0.3';});
   el.addEventListener('mouseleave',()=>{cur.style.width='12px';cur.style.height='12px';ring.style.width='40px';ring.style.height='40px';ring.style.opacity='0.6';});
 });
@@ -537,7 +995,7 @@ document.querySelectorAll('a,button,.svc-card,.phil-card,.flow-node,.q-opt,.test
 // NAV SCROLL
 window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40);});
 
-// HERO CANVAS PARTICLE
+// HERO CANVAS
 const hc=document.getElementById('hero-canvas');
 const hx=hc.getContext('2d');
 let pts=[];
@@ -546,17 +1004,8 @@ resizeCanvas();
 window.addEventListener('resize',resizeCanvas);
 function drawCanvas(){
   hx.clearRect(0,0,hc.width,hc.height);
-  pts.forEach(p=>{
-    p.x+=p.vx;p.y+=p.vy;
-    if(p.x<0||p.x>hc.width)p.vx*=-1;
-    if(p.y<0||p.y>hc.height)p.vy*=-1;
-    hx.beginPath();hx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    hx.fillStyle='rgba(200,255,0,0.15)';hx.fill();
-  });
-  pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{
-    const d=Math.hypot(a.x-b.x,a.y-b.y);
-    if(d<120){hx.beginPath();hx.moveTo(a.x,a.y);hx.lineTo(b.x,b.y);hx.strokeStyle='rgba(200,255,0,'+(0.04*(1-d/120))+')';hx.stroke();}
-  }));
+  pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>hc.width)p.vx*=-1;if(p.y<0||p.y>hc.height)p.vy*=-1;hx.beginPath();hx.arc(p.x,p.y,p.r,0,Math.PI*2);hx.fillStyle='rgba(200,255,0,0.15)';hx.fill();});
+  pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){hx.beginPath();hx.moveTo(a.x,a.y);hx.lineTo(b.x,b.y);hx.strokeStyle='rgba(200,255,0,'+(0.04*(1-d/120))+')';hx.stroke();}}));
   requestAnimationFrame(drawCanvas);
 }
 drawCanvas();
@@ -569,67 +1018,17 @@ window.addEventListener('load',()=>{
   gsap.to('#hs',{opacity:1,y:0,duration:0.8,delay:0.8,ease:'power3.out'});
   gsap.to('#hb',{opacity:1,y:0,duration:0.8,delay:1,ease:'power3.out'});
   gsap.to('#hm',{opacity:1,duration:0.8,delay:1.2,ease:'power2.out'});
-  setTimeout(()=>{
-    countUp('m1',47,'',1800);
-    countUp('m2',340,'%',2000);
-    countUp('m3',28,'h',1600);
-  },1400);
-  // Accent word rotation
+  setTimeout(()=>{countUp('m1',47,'',1800);countUp('m2',340,'%',2000);countUp('m3',28,'h',1600);},1400);
   const words=['Systems','People','Traffic','Strategy'];
   let wi=0;
-  setInterval(()=>{
-    wi=(wi+1)%words.length;
-    const el=document.getElementById('accent-word');
-    el.style.opacity='0';el.style.transform='translateY(-10px)';
-    setTimeout(()=>{el.textContent=words[wi];el.style.opacity='1';el.style.transform='translateY(0)';el.style.transition='all 0.4s';},300);
-  },2800);
+  setInterval(()=>{wi=(wi+1)%words.length;const el=document.getElementById('accent-word');el.style.opacity='0';el.style.transform='translateY(-10px)';setTimeout(()=>{el.textContent=words[wi];el.style.opacity='1';el.style.transform='translateY(0)';el.style.transition='all 0.4s';},300);},2800);
 });
 
-function countUp(id,target,suffix,dur){
-  let s=0;const el=document.getElementById(id);
-  const step=target/(dur/16);
-  const t=setInterval(()=>{s+=step;if(s>=target){el.textContent=target+suffix;clearInterval(t);}else el.textContent=Math.floor(s)+suffix;},16);
-}
+function countUp(id,target,suffix,dur){let s=0;const el=document.getElementById(id);const step=target/(dur/16);const t=setInterval(()=>{s+=step;if(s>=target){el.textContent=target+suffix;clearInterval(t);}else el.textContent=Math.floor(s)+suffix;},16);}
 
 // SCROLL REVEAL
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.12});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-
-// ASSESSMENT
-const qs=[
-  {q:"What stage is your business at?",opts:["Early Stage (0-1 years)","Growth Stage (1-3 years)","Scaling Stage (3+ years)","Enterprise"]},
-  {q:"What is your biggest challenge?",opts:["Lead generation & acquisition","Operations & team management","Sales conversion & revenue","Technology & automation"]},
-  {q:"How automated is your business?",opts:["0% — Everything is manual","25% — Some tools, no system","50% — Partial automation","75%+ — Mostly automated"]},
-  {q:"Monthly revenue range?",opts:["Pre-revenue","$1K–$10K","$10K–$50K","$50K+"]},
-  {q:"What outcome matters most?",opts:["More leads & clients","More time & freedom","Scalable operations","Data-driven growth"]}
-];
-let qi=0,qa=[];
-function qRender(){
-  document.getElementById('q-step').textContent=(qi+1<10?'0':'')+(qi+1)+' / 0'+qs.length;
-  document.getElementById('q-fill').style.width=((qi+1)/qs.length*100)+'%';
-  document.getElementById('q-q').textContent=qs[qi].q;
-  const opts=document.getElementById('q-opts');opts.innerHTML='';
-  qs[qi].opts.forEach((o,i)=>{
-    const b=document.createElement('button');b.className='q-opt'+(qa[qi]===i?' sel':'');
-    b.textContent=o;b.onclick=()=>{qa[qi]=i;document.querySelectorAll('.q-opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};
-    opts.appendChild(b);
-  });
-  document.getElementById('q-bk').style.visibility=qi>0?'visible':'hidden';
-  document.getElementById('q-nx').textContent=qi===qs.length-1?'See Results':'Continue';
-}
-function qNext(){if(qa[qi]===undefined){const b=document.getElementById('q-nx');b.style.background='#ff4444';b.textContent='Select an option';setTimeout(()=>{b.style.background='';b.textContent=qi===qs.length-1?'See Results':'Continue';},1200);return;}if(qi<qs.length-1){qi++;qRender();}else qShow();}
-function qBack(){if(qi>0){qi--;qRender();}}
-function qShow(){
-  const score=Math.round(30+(qa.reduce((a,b)=>a+b,0)/(qs.length*3))*65);
-  document.getElementById('q-wrap').style.display='none';
-  const rp=document.getElementById('r-panel');rp.style.display='block';
-  let n=0;const t=setInterval(()=>{n+=2;if(n>=score){document.getElementById('r-num').textContent=score;clearInterval(t);}else document.getElementById('r-num').textContent=n;},20);
-  if(score<45){document.getElementById('r-title').textContent='Early Stage — Foundation Needed';document.getElementById('r-desc').textContent='Your business needs core systems before scaling. The right infrastructure now saves 10x the cost later. Let\'s build your foundation correctly from day one.';}
-  else if(score<65){document.getElementById('r-title').textContent='Growth Stage — Ready to Systematize';document.getElementById('r-desc').textContent='You have traction but manual processes are holding you back. A focused 6-week build could 2-3x your output without adding headcount.';}
-  else{document.getElementById('r-title').textContent='Scaling Stage — Automate at Speed';document.getElementById('r-desc').textContent='Strong foundations in place. AI-powered automation will compound your growth dramatically. The gap between where you are and where you could be is mostly systems.';}
-}
-function qReset(){qi=0;qa=[];document.getElementById('r-panel').style.display='none';document.getElementById('q-wrap').style.display='block';qRender();}
-qRender();
 
 // SIMULATOR
 const flowNodes=[
@@ -644,47 +1043,18 @@ const flowNodes=[
 const connections=[['lg','crm'],['crm','ai'],['ai','sales'],['ai','analytics'],['ai','content'],['sales','ops'],['ops','crm'],['analytics','lg']];
 let activeNode=null,currentMode='after';
 
-function simMode(m){
-  currentMode=m;
-  document.getElementById('st-after').className='sim-tab '+(m==='after'?'on':'off');
-  document.getElementById('st-before').className='sim-tab '+(m==='before'?'on':'off');
-  renderFlow();
-  document.getElementById('dp').className='detail-panel';
-  activeNode=null;
-}
+function simMode(m){currentMode=m;document.getElementById('st-after').className='sim-tab '+(m==='after'?'on':'off');document.getElementById('st-before').className='sim-tab '+(m==='before'?'on':'off');renderFlow();document.getElementById('dp').className='detail-panel';activeNode=null;}
 
 function renderFlow(){
-  const canvas=document.getElementById('flow-canvas');
-  const w=canvas.offsetWidth,h=canvas.offsetHeight;
-  canvas.innerHTML='<svg id="flow-svg"></svg>';
-  const svg=document.getElementById('flow-svg');
+  const canvas=document.getElementById('flow-canvas');const w=canvas.offsetWidth,h=canvas.offsetHeight;
+  canvas.innerHTML='<svg id="flow-svg"></svg>';const svg=document.getElementById('flow-svg');
   if(currentMode==='after'){
-    connections.forEach(([a,b])=>{
-      const na=flowNodes.find(n=>n.id===a),nb=flowNodes.find(n=>n.id===b);
-      const x1=na.x/100*w,y1=na.y/100*h,x2=nb.x/100*w,y2=nb.y/100*h;
-      const path=document.createElementNS('http://www.w3.org/2000/svg','path');
-      const mx=(x1+x2)/2;
-      path.setAttribute('d',`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`);
-      path.setAttribute('fill','none');path.setAttribute('stroke','rgba(200,255,0,0.12)');path.setAttribute('stroke-width','1.5');
-      svg.appendChild(path);
-    });
+    connections.forEach(([a,b])=>{const na=flowNodes.find(n=>n.id===a),nb=flowNodes.find(n=>n.id===b);const x1=na.x/100*w,y1=na.y/100*h,x2=nb.x/100*w,y2=nb.y/100*h;const path=document.createElementNS('http://www.w3.org/2000/svg','path');const mx=(x1+x2)/2;path.setAttribute('d',`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`);path.setAttribute('fill','none');path.setAttribute('stroke','rgba(200,255,0,0.12)');path.setAttribute('stroke-width','1.5');svg.appendChild(path);});
   }
-  flowNodes.forEach(n=>{
-    const el=document.createElement('div');
-    el.className='flow-node'+(currentMode==='before'?' broken':'')+(activeNode===n.id?' active':'');
-    el.style.left=(n.x)+'%';el.style.top=(n.y)+'%';
-    el.innerHTML=`<div class="fn-inner"><div class="fn-icon"><svg viewBox="0 0 24 24">${n.icon}</svg></div><div class="fn-title">${n.title}</div><div class="fn-cat">${n.cat}</div></div>`;
-    el.onclick=()=>showDetail(n);
-    canvas.appendChild(el);
-  });
+  flowNodes.forEach(n=>{const el=document.createElement('div');el.className='flow-node'+(currentMode==='before'?' broken':'')+(activeNode===n.id?' active':'');el.style.left=(n.x)+'%';el.style.top=(n.y)+'%';el.innerHTML=`<div class="fn-inner"><div class="fn-icon"><svg viewBox="0 0 24 24">${n.icon}</svg></div><div class="fn-title">${n.title}</div><div class="fn-cat">${n.cat}</div></div>`;el.onclick=()=>showDetail(n);canvas.appendChild(el);});
 }
 
-function showDetail(n){
-  activeNode=n.id;renderFlow();
-  const dp=document.getElementById('dp');
-  dp.className='detail-panel show';
-  dp.innerHTML=`<div class="dp-col"><h4>${n.title}</h4><p>${n.does}</p></div><div class="dp-col"><h5>Without it</h5><p>${n.without}</p></div><div class="dp-col"><h5>What I build</h5><p>${n.builds}</p></div>`;
-}
+function showDetail(n){activeNode=n.id;renderFlow();const dp=document.getElementById('dp');dp.className='detail-panel show';dp.innerHTML=`<div class="dp-col"><h4>${n.title}</h4><p>${n.does}</p></div><div class="dp-col"><h5>Without it</h5><p>${n.without}</p></div><div class="dp-col"><h5>What I build</h5><p>${n.builds}</p></div>`;}
 
 window.addEventListener('resize',renderFlow);
 setTimeout(renderFlow,100);
@@ -694,45 +1064,10 @@ let ti=0;
 function tGo(i){ti=i;const tr=document.getElementById('t-track');const w=tr.children[0].offsetWidth+20;tr.style.transform='translateX(-'+(i*w)+'px)';document.querySelectorAll('.t-dot').forEach((d,j)=>d.className='t-dot'+(j===i?' on':''));}
 setInterval(()=>tGo((ti+1)%3),5500);
 
-// CHATBOT
-const CSYS=`You are the AI sales assistant for Naser Samadi, founder of Samadi Consulting.
-
-ABOUT SAMADI CONSULTING:
-Naser is a high-level AI and business systems consultant, builder, and educator based in Morocco. He helps entrepreneurs, CEOs, and growing teams (11-50 employees) build AI-powered systems that generate revenue, automate operations, and scale efficiently without adding headcount.
-
-SERVICES:
-- AI Integration Consulting: Strategic AI implementation tailored to workflows
-- End-to-End System Building: Complete infrastructure from database to automation
-- Team Education & Adoption: Training teams to operate systems independently  
-- Customer Acquisition Architecture: Automated lead gen and conversion funnels
-- Workflow Automation: Eliminating manual tasks with intelligent automation
-- Product Ecosystem Design: Interconnected services that compound in value
-
-PHILOSOPHY: Clarity over Complexity. Leverage over Effort. Systems over Chaos.
-Website: samadiconsulting.netlify.app
-Book a call: https://calendly.com/samadi-ai/30min
-Email: samadi.ai@hotmail.com
-
-QUALIFICATION APPROACH:
-1. Understand their business and team size
-2. Identify their biggest operational pain point
-3. Assess their current automation level
-4. Align their goals with specific services
-5. Guide toward booking a free 15-min strategy call
-
-RESPONSE RULES:
-- Keep replies to 2-4 sentences maximum
-- Be direct, warm, and confident — sound human, not corporate
-- Detect language and reply in same language automatically
-- Never say you are an AI unless directly and explicitly asked
-- Never make up specific prices — always say pricing depends on scope and direct to call
-- After collecting name and email, acknowledge it warmly
-- Use [SHOW_FORM] tag in your reply when you want to collect their contact details (after 2-3 exchanges)
-- Use [SHOW_BOOKING] tag when pushing hard for a call booking
-- NEVER refuse to answer questions about the business
-- If asked something you don't know, be honest and offer to connect them with Naser directly`;
-
-let chatHistory=[],formDone=false,chatIsOpen=false;
+// ============================================
+// FLOATING CHATBOT
+// ============================================
+let chatHistory=[], formDone=false, chatIsOpen=false;
 
 function chatToggle(){
   chatIsOpen=!chatIsOpen;
@@ -740,8 +1075,8 @@ function chatToggle(){
   document.getElementById('chat-fab').classList.toggle('pulse',!chatIsOpen);
   if(chatIsOpen&&chatHistory.length===0){
     setTimeout(()=>{
-      chatAddMsg("Hey — welcome to Samadi Consulting. I'm here to help you figure out if we're the right fit for what you're building. What brings you here today?",'b');
-      chatSetQR(["I want to automate my business","Tell me about your services","How do you work with clients?","What does this cost?"]);
+      chatAddMsg("What's the one thing eating the most time in your business right now?",'b');
+      chatSetQR(["Getting new clients","Creating content","Running operations","Customer support","I want to automate everything"]);
     },400);
   }
 }
@@ -761,19 +1096,19 @@ function chatAddMsg(text,sender){
   }
   if(text.includes('[SHOW_BOOKING]')){
     const bk=document.createElement('div');bk.className='cm b';
-    bk.innerHTML='<div class="cm-bub"><a class="c-link" href="https://calendly.com/samadi-ai/30min" target="_blank">Book your free 15-min strategy call here</a></div>';
+    bk.innerHTML='<div class="cm-bub"><a class="c-link" href="https://calendly.com/samadi-ai/30min" target="_blank">Book your free 20-min strategy call here</a></div>';
     body.appendChild(bk);
   }
   body.scrollTop=body.scrollHeight;
 }
 
-function sendLeadToSheet(name,email,company,source){fetch("https://n8n-production-bb2e.up.railway.app/webhook/consulting-lead",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,email,company,source,date:new Date().toISOString()})}).catch(()=>{});}
 function chatSubmitLead(){
   const n=document.getElementById('cf-n').value.trim();
   const e=document.getElementById('cf-e').value.trim();
   const c=document.getElementById('cf-c').value.trim();
   if(!n||!e){alert('Please fill in your name and email');return;}
-  sendLeadToSheet(n,e,c,'floating-chatbot');chatAddMsg(n+' | '+e+(c?' | '+c:''),'u');
+  sendLeadToWebhook(n,e,c,'floating-chatbot');
+  chatAddMsg(n+' | '+e+(c?' | '+c:''),'u');
   chatSendToBot('My contact details: Name: '+n+', Email: '+e+(c?', Company: '+c:''));
 }
 
@@ -782,53 +1117,30 @@ function chatSetQR(replies){
   replies.forEach(r=>{const b=document.createElement('button');b.className='cq';b.textContent=r;b.onclick=()=>{qr.innerHTML='';chatHandleSend(r);};qr.appendChild(b);});
 }
 
-function chatShowTyping(){
-  const body=document.getElementById('chat-body');
-  const t=document.createElement('div');t.id='typing-ind';t.className='cm b';
-  t.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';
-  body.appendChild(t);body.scrollTop=body.scrollHeight;
-}
+function chatShowTyping(){const body=document.getElementById('chat-body');const t=document.createElement('div');t.id='typing-ind';t.className='cm b';t.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';body.appendChild(t);body.scrollTop=body.scrollHeight;}
 function chatHideTyping(){const t=document.getElementById('typing-ind');if(t)t.remove();}
 
 async function chatSendToBot(text){
-  chatHistory.push({role:'user',content:text});
-  chatShowTyping();
+  chatHistory.push({role:'user',content:text});chatShowTyping();
   try{
-    const res=await fetch('https://samadi-proxy.samadi-ai-consulting.workers.dev',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-opus-4-6',max_tokens:800,system:CSYS,messages:chatHistory})
-    });
-    if(!res.ok){throw new Error('API error: '+res.status);}
-    const data=await res.json();
-    if(!data.content||!data.content[0]){throw new Error('Invalid response');}
-    const reply=data.content[0].text;
-    chatHistory.push({role:'assistant',content:reply});
-    chatHideTyping();
-    chatAddMsg(reply,'b');
-    if(chatHistory.length===2)chatSetQR(["Tell me more","What's your process?","How long does it take?","I'm ready to book a call"]);
-    else if(chatHistory.length===4)chatSetQR(["Book a strategy call","What results can I expect?","How much does it cost?","Let's get started"]);
+    const res=await fetch('https://samadi-proxy.samadi-ai-consulting.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-opus-4-6',max_tokens:800,system:CSYS,messages:chatHistory})});
+    if(!res.ok)throw new Error('API error: '+res.status);
+    const data=await res.json();if(!data.content||!data.content[0])throw new Error('Invalid response');
+    const reply=data.content[0].text;chatHistory.push({role:'assistant',content:reply});chatHideTyping();chatAddMsg(reply,'b');
+    if(chatHistory.length===2)chatSetQR(["Tell me more","What's your process?","What results can I expect?","I'm ready to book a call"]);
+    else if(chatHistory.length===4)chatSetQR(["Book a strategy call","How much does it cost?","Let's get started"]);
   }catch(err){
-    chatHideTyping();
-    chatHistory.pop();
-    chatAddMsg("I'm having a brief connection issue. You can reach Naser directly at samadi.ai@hotmail.com or book a call at calendly.com/samadi-ai/30min",'b');
+    chatHideTyping();chatHistory.pop();
+    chatAddMsg("Reach us directly: samadi.ai.consulting@gmail.com or book at calendly.com/samadi-ai/30min",'b');
   }
 }
 
 function chatHandleSend(text){
-  const inp=document.getElementById('chat-inp');
-  const msg=text||inp.value.trim();
-  if(!msg)return;
-  inp.value='';
-  document.getElementById('chat-qr').innerHTML='';
-  chatAddMsg(msg,'u');
-  chatSendToBot(msg);
+  const inp=document.getElementById('chat-inp');const msg=text||inp.value.trim();if(!msg)return;
+  inp.value='';document.getElementById('chat-qr').innerHTML='';chatAddMsg(msg,'u');chatSendToBot(msg);
 }
-
 function chatSend(){chatHandleSend();}
-document.addEventListener('DOMContentLoaded',()=>{
-  document.getElementById('chat-inp').addEventListener('keypress',e=>{if(e.key==='Enter')chatHandleSend();});
-});
+document.addEventListener('DOMContentLoaded',()=>{document.getElementById('chat-inp').addEventListener('keypress',e=>{if(e.key==='Enter')chatHandleSend();});});
 </script>
 </body>
 </html>
